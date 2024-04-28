@@ -17,14 +17,6 @@ import {
   TableRow,
 } from "../../components/ui/table";
 import {
-  USER_ADD_ERROR_ALERT,
-  USER_ADD_SUCCESS_ALERT,
-  USER_DEL_ERROR_ALERT,
-  USER_DEL_SUCCESS_ALERT,
-  USER_EDIT_ERROR_ALERT,
-  USER_EDIT_SUCCESS_ALERT,
-} from "../../constants/alerts_constants";
-import {
   ADMIN_HEADER_DESCRIPTION,
   ADMIN_HEADER_TITLE,
 } from "../../constants/constants";
@@ -125,12 +117,12 @@ export default function AdminPage() {
       .then((res) => {
         resetFilter();
         setSuccessData({
-          title: USER_DEL_SUCCESS_ALERT,
+          title: "Success! User deleted!",
         });
       })
       .catch((error) => {
         setErrorData({
-          title: USER_DEL_ERROR_ALERT,
+          title: "Error on delete user",
           list: [error["response"]["data"]["detail"]],
         });
       });
@@ -141,12 +133,12 @@ export default function AdminPage() {
       .then((res) => {
         resetFilter();
         setSuccessData({
-          title: USER_EDIT_SUCCESS_ALERT,
+          title: "Success! User edited!",
         });
       })
       .catch((error) => {
         setErrorData({
-          title: USER_EDIT_ERROR_ALERT,
+          title: "Error on edit user",
           list: [error["response"]["data"]["detail"]],
         });
       });
@@ -160,12 +152,12 @@ export default function AdminPage() {
       .then((res) => {
         resetFilter();
         setSuccessData({
-          title: USER_EDIT_SUCCESS_ALERT,
+          title: "Success! User edited!",
         });
       })
       .catch((error) => {
         setErrorData({
-          title: USER_EDIT_ERROR_ALERT,
+          title: "Error on edit user",
           list: [error["response"]["data"]["detail"]],
         });
       });
@@ -178,12 +170,12 @@ export default function AdminPage() {
       .then((res) => {
         resetFilter();
         setSuccessData({
-          title: USER_EDIT_SUCCESS_ALERT,
+          title: "Success! User edited!",
         });
       })
       .catch((error) => {
         setErrorData({
-          title: USER_EDIT_ERROR_ALERT,
+          title: "Error on edit user",
           list: [error["response"]["data"]["detail"]],
         });
       });
@@ -198,13 +190,13 @@ export default function AdminPage() {
         }).then((res) => {
           resetFilter();
           setSuccessData({
-            title: USER_ADD_SUCCESS_ALERT,
+            title: "Success! New user added!",
           });
         });
       })
       .catch((error) => {
         setErrorData({
-          title: USER_ADD_ERROR_ALERT,
+          title: "Error when adding new user",
           list: [error.response.data.detail],
         });
       });

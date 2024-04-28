@@ -43,7 +43,6 @@ export const SidebarDraggableComponent = forwardRef(
     const deleteComponent = useFlowsManagerStore(
       (state) => state.deleteComponent
     );
-
     const version = useDarkStore((state) => state.version);
     const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
     const popoverRef = useRef<HTMLDivElement>(null);

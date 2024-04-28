@@ -3,16 +3,6 @@ import { useContext, useState } from "react";
 import IconComponent from "../../components/genericIconComponent";
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
-import {
-  API_ERROR_ALERT,
-  API_SUCCESS_ALERT,
-} from "../../constants/alerts_constants";
-import {
-  CREATE_API_KEY,
-  INSERT_API_KEY,
-  INVALID_API_KEY,
-  NO_API_KEY,
-} from "../../constants/constants";
 import { AuthContext } from "../../contexts/authContext";
 import { addApiKeyStore } from "../../controllers/API";
 import useAlertStore from "../../stores/alertStore";
@@ -42,7 +32,7 @@ export default function StoreApiKeyModal({
       addApiKeyStore(apiKeyValue).then(
         () => {
           setSuccessData({
-            title: API_SUCCESS_ALERT,
+            title: "Success! Your API Key has been saved.",
           });
           storeApiKey(apiKeyValue);
           setOpen(false);
@@ -52,7 +42,7 @@ export default function StoreApiKeyModal({
         },
         (error) => {
           setErrorData({
-            title: API_ERROR_ALERT,
+            title: "There was an error saving the API Key, please try again.",
             list: [error["response"]["data"]["detail"]],
           });
           setHasApiKey(false);
@@ -69,10 +59,10 @@ export default function StoreApiKeyModal({
       <BaseModal.Header
         description={
           (hasApiKey && !validApiKey
-            ? INVALID_API_KEY
+            ? "Your API key is not valid. "
             : !hasApiKey
-            ? NO_API_KEY
-            : "") + INSERT_API_KEY
+            ? "You don't have an API key. "
+            : "") + "Insert your Langflow API key."
         }
       >
         <span className="pr-2">API Key</span>
@@ -107,7 +97,7 @@ export default function StoreApiKeyModal({
           </div>
           <div className="flex items-end justify-between">
             <span className="pr-1 text-xs text-muted-foreground">
-              {CREATE_API_KEY}{" "}
+              Don’t have an API key? Sign up at{" "}
               <a
                 className="text-high-indigo underline"
                 href="https://langflow.store/"
@@ -129,7 +119,6 @@ export default function StoreApiKeyModal({
 
               <Form.Submit asChild>
                 <Button
-                  data-testid="api-key-save-button-store"
                   className="mt-8"
                   onClick={() => {
                     handleSaveKey();

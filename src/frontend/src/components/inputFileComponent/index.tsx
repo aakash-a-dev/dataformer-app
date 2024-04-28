@@ -1,9 +1,4 @@
 import { useEffect, useState } from "react";
-import {
-  CONSOLE_ERROR_MSG,
-  CONSOLE_SUCCESS_MSG,
-  INVALID_FILE_ALERT,
-} from "../../constants/alerts_constants";
 import { uploadFile } from "../../controllers/API";
 import useAlertStore from "../../stores/alertStore";
 import useFlowsManagerStore from "../../stores/flowsManagerStore";
@@ -66,7 +61,7 @@ export default function InputFileComponent({
         uploadFile(file, currentFlowId)
           .then((res) => res.data)
           .then((data) => {
-            console.log(CONSOLE_SUCCESS_MSG);
+            console.log("File uploaded successfully");
             // Get the file name from the response
             const { file_path } = data;
             console.log("File name:", file_path);
@@ -80,13 +75,14 @@ export default function InputFileComponent({
             setLoading(false);
           })
           .catch(() => {
-            console.error(CONSOLE_ERROR_MSG);
+            console.error("Error occurred while uploading file");
             setLoading(false);
           });
       } else {
         // Show an error if the file type is not allowed
         setErrorData({
-          title: INVALID_FILE_ALERT,
+          title:
+            "Please select a valid file. Only these file types are allowed:",
           list: fileTypes,
         });
         setLoading(false);

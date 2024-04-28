@@ -1,4 +1,3 @@
-import { Cross2Icon } from "@radix-ui/react-icons";
 import { useState } from "react";
 import IconComponent from "../../components/genericIconComponent";
 import {
@@ -6,7 +5,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "../../components/ui/popover";
-import { ZERO_NOTIFICATIONS } from "../../constants/constants";
 import useAlertStore from "../../stores/alertStore";
 import { AlertDropdownType } from "../../types/alerts";
 import SingleAlert from "./components/singleAlertComponent";
@@ -47,15 +45,15 @@ export default function AlertDropdown({
                 setTimeout(clearNotificationList, 100);
               }}
             >
-              <IconComponent name="Trash2" className="h-4 w-4" />
+              <IconComponent name="Trash2" className="h-[1.1rem] w-[1.1rem]" />
             </button>
             <button
-              className="text-foreground opacity-70 hover:opacity-100"
+              className="text-foreground hover:text-status-red"
               onClick={() => {
                 setOpen(false);
               }}
             >
-              <Cross2Icon className="h-4 w-4" />
+              <IconComponent name="X" className="h-5 w-5" />
             </button>
           </div>
         </div>
@@ -70,7 +68,7 @@ export default function AlertDropdown({
             ))
           ) : (
             <div className="flex h-full w-full items-center justify-center pb-16 text-ring">
-              {ZERO_NOTIFICATIONS}
+              No new notifications
             </div>
           )}
         </div>

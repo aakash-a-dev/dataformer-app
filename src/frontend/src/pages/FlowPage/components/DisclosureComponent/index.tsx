@@ -4,7 +4,6 @@ import { DisclosureComponentType } from "../../../../types/components";
 
 export default function DisclosureComponent({
   button: { title, Icon, buttons = [] },
-  isChild = true,
   children,
   openDisc,
 }: DisclosureComponentType): JSX.Element {
@@ -13,15 +12,8 @@ export default function DisclosureComponent({
       {({ open }) => (
         <>
           <div>
-            <Disclosure.Button
-              className={
-                isChild
-                  ? "components-disclosure-arrangement-child"
-                  : "components-disclosure-arrangement"
-              }
-              data-testid={`disclosure-${title.toLocaleLowerCase()}`}
-            >
-              <div className={"flex gap-4" + (isChild ? " pl-2" : "")}>
+            <Disclosure.Button className="components-disclosure-arrangement">
+              <div className="flex gap-4">
                 {/* BUG ON THIS ICON */}
                 <Icon strokeWidth={1.5} size={22} className="text-primary" />
                 <span className="components-disclosure-title">{title}</span>

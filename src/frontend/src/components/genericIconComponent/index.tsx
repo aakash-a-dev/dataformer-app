@@ -1,57 +1,36 @@
-import dynamicIconImports from "lucide-react/dynamicIconImports";
-import { Suspense, forwardRef, lazy, memo } from "react";
+import { forwardRef } from "react";
 import { IconComponentProps } from "../../types/components";
 import { nodeIconsLucide } from "../../utils/styleUtils";
-import { cn } from "../../utils/utils";
-import Loading from "../ui/loading";
 
-const ForwardedIconComponent = memo(
-  forwardRef(
-    (
-      {
-        name,
-        className,
-        iconColor,
-        stroke,
-        strokeWidth,
-        id = "",
-      }: IconComponentProps,
-      ref
-    ) => {
-      let TargetIcon = nodeIconsLucide[name];
-      if (!TargetIcon) {
-        // check if name exists in dynamicIconImports
-        if (!dynamicIconImports[name]) {
-          TargetIcon = nodeIconsLucide["unknown"];
-        } else TargetIcon = lazy(dynamicIconImports[name]);
-      }
+const ForwardedIconComponent = forwardRef(
+  (
+    {
+      name,
+      className,
+      iconColor,
+      stroke,
+      strokeWidth,
+      id = "",
+    }: IconComponentProps,
+    ref
+  ) => {
+    const TargetIcon = nodeIconsLucide[name] ?? nodeIconsLucide["unknown"];
 
-      const style = {
-        strokeWidth: strokeWidth ?? 1.5,
-        ...(stroke && { stroke: stroke }),
-        ...(iconColor && { color: iconColor, stroke: stroke }),
-      };
+    const style = {
+      strokeWidth: strokeWidth ?? 1.5,
+      ...(stroke && { stroke: stroke }),
+      ...(iconColor && { color: iconColor, stroke: stroke }),
+    };
 
-      if (!TargetIcon) {
-        return null; // Render nothing until the icon is loaded
-      }
-      const fallback = (
-        <div className={cn(className, "flex items-center justify-center")}>
-          <Loading />
-        </div>
-      );
-      return (
-        <Suspense fallback={fallback}>
-          <TargetIcon
-            className={className}
-            style={style}
-            ref={ref}
-            data-testid={id ? `${id}-${name}` : `icon-${name}`}
-          />
-        </Suspense>
-      );
-    }
-  )
+    return (
+      <TargetIcon
+        className={className}
+        style={style}
+        ref={ref}
+        data-testid={id ? `${id}-${name}` : `icon-${name}`}
+      />
+    );
+  }
 );
 
 export default ForwardedIconComponent;

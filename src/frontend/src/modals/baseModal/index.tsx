@@ -9,14 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../../components/ui/dialog";
-
-import {
-  Dialog as Modal,
-  DialogContent as ModalContent,
-} from "../../components/ui/dialog-with-no-close";
-
 import { modalHeaderType } from "../../types/components";
-import { cn } from "../../utils/utils";
 
 type ContentProps = { children: ReactNode };
 type HeaderProps = { children: ReactNode; description: string };
@@ -28,7 +21,7 @@ type TriggerProps = {
 };
 
 const Content: React.FC<ContentProps> = ({ children }) => {
-  return <div className="flex h-full w-full flex-col">{children}</div>;
+  return <div className="h-full w-full">{children}</div>;
 };
 const Trigger: React.FC<TriggerProps> = ({ children, asChild, disable }) => {
   return (
@@ -73,8 +66,6 @@ interface BaseModalProps {
     | "small"
     | "medium"
     | "large"
-    | "three-cards"
-    | "large-thin"
     | "large-h-full"
     | "small-h-full"
     | "medium-h-full"
@@ -82,7 +73,6 @@ interface BaseModalProps {
 
   disable?: boolean;
   onChangeOpenModal?: (open?: boolean) => void;
-  type?: "modal" | "dialog";
 }
 function BaseModal({
   open,
@@ -90,7 +80,6 @@ function BaseModal({
   children,
   size = "large",
   onChangeOpenModal,
-  type = "dialog",
 }: BaseModalProps) {
   const headerChild = React.Children.toArray(children).find(
     (child) => (child as React.ReactElement).type === Header
@@ -136,15 +125,7 @@ function BaseModal({
       minWidth = "min-w-[60vw]";
       break;
     case "large":
-      minWidth = "min-w-[85vw]";
-      height = "h-[80vh]";
-      break;
-    case "three-cards":
-      minWidth = "min-w-[1066px]";
-      height = "h-fit";
-      break;
-    case "large-thin":
-      minWidth = "min-w-[65vw]";
+      minWidth = "min-w-[80vw]";
       height = "h-[80vh]";
       break;
     case "large-h-full":
@@ -164,43 +145,18 @@ function BaseModal({
 
   //UPDATE COLORS AND STYLE CLASSSES
   return (
-    <>
-      {type === "modal" ? (
-        <Modal open={open} onOpenChange={setOpen}>
-          {triggerChild}
-          <ModalContent className={cn(minWidth, "duration-300")}>
-            <div className="truncate-doubleline word-break-break-word">
-              {headerChild}
-            </div>
-            <div
-              className={`flex flex-col ${height!} w-full transition-all duration-300`}
-            >
-              {ContentChild}
-            </div>
-            {ContentFooter && (
-              <div className="flex flex-row-reverse">{ContentFooter}</div>
-            )}
-          </ModalContent>
-        </Modal>
-      ) : (
-        <Dialog open={open} onOpenChange={setOpen}>
-          {triggerChild}
-          <DialogContent className={cn(minWidth, "duration-300")}>
-            <div className="truncate-doubleline word-break-break-word">
-              {headerChild}
-            </div>
-            <div
-              className={`flex flex-col ${height!} w-full transition-all duration-300`}
-            >
-              {ContentChild}
-            </div>
-            {ContentFooter && (
-              <div className="flex flex-row-reverse">{ContentFooter}</div>
-            )}
-          </DialogContent>
-        </Dialog>
-      )}
-    </>
+    <Dialog open={open} onOpenChange={setOpen}>
+      {triggerChild}
+      <DialogContent className={minWidth}>
+        <div className="truncate-doubleline word-break-break-word">
+          {headerChild}
+        </div>
+        <div className={`flex flex-col ${height!} w-full `}>{ContentChild}</div>
+        {ContentFooter && (
+          <div className="flex flex-row-reverse">{ContentFooter}</div>
+        )}
+      </DialogContent>
+    </Dialog>
   );
 }
 

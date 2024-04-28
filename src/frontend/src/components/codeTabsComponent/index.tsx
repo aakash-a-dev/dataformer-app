@@ -6,6 +6,7 @@ import AccordionComponent from "../../components/AccordionComponent";
 import CodeAreaComponent from "../../components/codeAreaComponent";
 import Dropdown from "../../components/dropdownComponent";
 import FloatComponent from "../../components/floatComponent";
+import InputComponent from "../../components/inputComponent";
 import InputFileComponent from "../../components/inputFileComponent";
 import InputListComponent from "../../components/inputListComponent";
 import IntComponent from "../../components/intComponent";
@@ -36,10 +37,8 @@ import {
   hasDuplicateKeys,
 } from "../../utils/reactflowUtils";
 import { classNames } from "../../utils/utils";
-import ShadTooltip from "../ShadTooltipComponent";
 import DictComponent from "../dictComponent";
 import IconComponent from "../genericIconComponent";
-import InputGlobalComponent from "../inputGlobalComponent";
 import KeypairListComponent from "../keypairListComponent";
 
 export default function CodeTabsComponent({
@@ -55,7 +54,8 @@ export default function CodeTabsComponent({
   const [openAccordion, setOpenAccordion] = useState<string[]>([]);
   const dark = useDarkStore((state) => state.dark);
   const unselectAll = useFlowStore((state) => state.unselectAll);
-  const setNode = useFlowStore((state) => state.setNode);
+
+  const setNodes = useFlowStore((state) => state.setNodes);
 
   const [errorDuplicateKey, setErrorDuplicateKey] = useState(false);
 
@@ -126,7 +126,7 @@ export default function CodeTabsComponent({
     <Tabs
       value={activeTab}
       className={
-        "api-modal-tabs inset-0 m-0 " +
+        "api-modal-tabs " +
         (isMessage ? "dark " : "") +
         (dark && isMessage ? "bg-background" : "")
       }
@@ -166,7 +166,7 @@ export default function CodeTabsComponent({
               ) : (
                 <IconComponent name="Clipboard" className="h-4 w-4" />
               )}
-              {isCopied ? "Copied!" : "Copy Code"}
+              {isCopied ? "Copied!" : "Copy code"}
             </button>
             <button
               className="flex items-center gap-1.5 rounded bg-none p-1 text-xs text-gray-500 dark:text-gray-300"
@@ -181,7 +181,7 @@ export default function CodeTabsComponent({
       {tabs.map((tab, idx) => (
         <TabsContent
           value={idx.toString()}
-          className="api-modal-tabs-content overflow-hidden"
+          className="api-modal-tabs-content"
           key={idx} // Remember to add a unique key prop
         >
           {idx < 4 ? (
@@ -193,9 +193,9 @@ export default function CodeTabsComponent({
                 ></div>
               )}
               <SyntaxHighlighter
-                language={tab.language}
+                className="mt-0 h-full w-full overflow-auto custom-scroll"
+                language={tab.mode}
                 style={oneDark}
-                className="mt-0 h-full overflow-auto rounded-sm text-left custom-scroll"
               >
                 {tab.code}
               </SyntaxHighlighter>
@@ -205,7 +205,10 @@ export default function CodeTabsComponent({
               <div className="api-modal-according-display">
                 <div
                   className={classNames(
-                    "h-[70vh] w-full overflow-y-auto overflow-x-hidden rounded-lg bg-muted custom-scroll"
+                    "h-[70vh] w-full rounded-lg bg-muted",
+                    1 == 1
+                      ? "overflow-scroll overflow-x-hidden custom-scroll"
+                      : "overflow-hidden"
                   )}
                 >
                   {data?.map((node: any, i) => (
@@ -214,22 +217,14 @@ export default function CodeTabsComponent({
                         node["data"]["id"]
                       ) && (
                         <AccordionComponent
-                          trigger={
-                            <ShadTooltip
-                              side="top"
-                              styleClasses="z-50"
-                              content={node["data"]["id"]}
-                            >
-                              <div>{node["data"]["node"]["display_name"]}</div>
-                            </ShadTooltip>
-                          }
+                          trigger={node["data"]["id"]}
                           open={openAccordion}
                           keyValue={node["data"]["id"]}
                         >
                           <div className="api-modal-table-arrangement">
                             <Table className="table-fixed bg-muted outline-1">
                               <TableHeader className="h-10 border-input text-xs font-medium text-ring">
-                                <TableRow className="">
+                                <TableRow className="dark:border-b-muted">
                                   <TableHead className="h-7 text-center">
                                     PARAM
                                   </TableHead>
@@ -252,7 +247,10 @@ export default function CodeTabsComponent({
                                   )
                                   .map((templateField, indx) => {
                                     return (
-                                      <TableRow key={indx} className="h-10">
+                                      <TableRow
+                                        key={indx}
+                                        className="h-10 dark:border-b-muted"
+                                      >
                                         <TableCell className="p-0 text-center text-sm text-foreground">
                                           {templateField}
                                         </TableCell>
@@ -269,9 +267,6 @@ export default function CodeTabsComponent({
                                                   templateField
                                                 ].list ? (
                                                   <InputListComponent
-                                                    componentName={
-                                                      templateField
-                                                    }
                                                     editNode={true}
                                                     disabled={false}
                                                     value={
@@ -351,31 +346,38 @@ export default function CodeTabsComponent({
                                                     />
                                                   </div>
                                                 ) : (
-                                                  <InputGlobalComponent
+                                                  <InputComponent
                                                     editNode={true}
                                                     disabled={false}
+                                                    password={
+                                                      node.data.node.template[
+                                                        templateField
+                                                      ].password ?? false
+                                                    }
+                                                    value={
+                                                      !node.data.node.template[
+                                                        templateField
+                                                      ].value ||
+                                                      node.data.node.template[
+                                                        templateField
+                                                      ].value === ""
+                                                        ? ""
+                                                        : node.data.node
+                                                            .template[
+                                                            templateField
+                                                          ].value
+                                                    }
                                                     onChange={(target) => {
-                                                      if (node.data) {
-                                                        setNode(
-                                                          node.data.id,
-                                                          (oldNode) => {
-                                                            let newNode =
-                                                              cloneDeep(
-                                                                oldNode
-                                                              );
-
-                                                            newNode.data = {
-                                                              ...newNode.data,
-                                                            };
-
-                                                            newNode.data.node.template[
-                                                              templateField
-                                                            ].value = target;
-
-                                                            return newNode;
-                                                          }
-                                                        );
-                                                      }
+                                                      setData((old) => {
+                                                        let newInputList =
+                                                          cloneDeep(old);
+                                                        newInputList![
+                                                          i
+                                                        ].data.node.template[
+                                                          templateField
+                                                        ].value = target;
+                                                        return newInputList;
+                                                      });
                                                       tweaks.buildTweakObject!(
                                                         node["data"]["id"],
                                                         target,
@@ -384,25 +386,6 @@ export default function CodeTabsComponent({
                                                         ]
                                                       );
                                                     }}
-                                                    setDb={(value) => {
-                                                      setNode(
-                                                        node.data.id,
-                                                        (oldNode) => {
-                                                          let newNode =
-                                                            cloneDeep(oldNode);
-                                                          newNode.data = {
-                                                            ...newNode.data,
-                                                          };
-                                                          newNode.data.node.template[
-                                                            templateField
-                                                          ].load_from_db =
-                                                            value;
-                                                          return newNode;
-                                                        }
-                                                      );
-                                                    }}
-                                                    name={templateField}
-                                                    data={node.data}
                                                   />
                                                 )}
                                               </div>
@@ -521,6 +504,7 @@ export default function CodeTabsComponent({
                                               <div className="mx-auto">
                                                 <Dropdown
                                                   editNode={true}
+                                                  apiModal={true}
                                                   options={
                                                     node.data.node.template[
                                                       templateField
@@ -566,11 +550,6 @@ export default function CodeTabsComponent({
                                                 <IntComponent
                                                   disabled={false}
                                                   editNode={true}
-                                                  rangeSpec={
-                                                    node.data.node.template[
-                                                      templateField
-                                                    ].rangeSpec
-                                                  }
                                                   value={
                                                     !node.data.node.template[
                                                       templateField
@@ -742,11 +721,6 @@ export default function CodeTabsComponent({
                                                       ]
                                                     );
                                                   }}
-                                                  isList={
-                                                    node.data.node!.template[
-                                                      templateField
-                                                    ].list ?? false
-                                                  }
                                                 />
                                               </div>
                                             ) : node.data.node.template[

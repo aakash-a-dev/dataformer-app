@@ -18,10 +18,6 @@ import SecretKeyModal from "../../modals/SecretKeyModal";
 import moment from "moment";
 import Header from "../../components/headerComponent";
 import {
-  DEL_KEY_ERROR_ALERT,
-  DEL_KEY_SUCCESS_ALERT,
-} from "../../constants/alerts_constants";
-import {
   API_PAGE_PARAGRAPH_1,
   API_PAGE_PARAGRAPH_2,
   API_PAGE_USER_KEYS,
@@ -67,12 +63,12 @@ export default function ApiKeysPage() {
       .then((res) => {
         resetFilter();
         setSuccessData({
-          title: DEL_KEY_SUCCESS_ALERT,
+          title: "Success! Key deleted!",
         });
       })
       .catch((error) => {
         setErrorData({
-          title: DEL_KEY_ERROR_ALERT,
+          title: "Error on delete key",
           list: [error["response"]["data"]["detail"]],
         });
       });

@@ -1,6 +1,5 @@
-import { useContext } from "react";
-import { FaDiscord, FaGithub } from "react-icons/fa";
-import { RiTwitterXFill } from "react-icons/ri";
+import { useContext, useEffect } from "react";
+import { FaDiscord, FaGithub, FaTwitter } from "react-icons/fa";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import AlertDropdown from "../../alerts/alertDropDown";
 import { USER_PROJECTS_HEADER } from "../../constants/constants";
@@ -34,11 +33,20 @@ export default function Header(): JSX.Element {
   const removeFlow = useFlowsManagerStore((store) => store.removeFlow);
   const hasStore = useStoreStore((state) => state.hasStore);
   const { id } = useParams();
-  const nodes = useFlowStore((state) => state.nodes);
+  const n = useFlowStore((state) => state.nodes);
 
   const dark = useDarkStore((state) => state.dark);
   const setDark = useDarkStore((state) => state.setDark);
   const stars = useDarkStore((state) => state.stars);
+
+  useEffect(() => {
+    if (dark) {
+      document.getElementById("body")!.classList.add("dark");
+    } else {
+      document.getElementById("body")!.classList.remove("dark");
+    }
+    window.localStorage.setItem("isDark", dark.toString());
+  }, [dark]);
 
   async function checkForChanges(nodes: Node[]): Promise<void> {
     if (nodes.length === 0) {
@@ -49,7 +57,7 @@ export default function Header(): JSX.Element {
   return (
     <div className="header-arrangement">
       <div className="header-start-display lg:w-[30%]">
-        <Link to="/" onClick={() => checkForChanges(nodes)}>
+        <Link to="/" onClick={() => checkForChanges(n)}>
           <span className="ml-4 text-2xl">⛓️</span>
         </Link>
         <MenuBar removeFunction={checkForChanges} />
@@ -66,7 +74,7 @@ export default function Header(): JSX.Element {
             }
             size="sm"
             onClick={() => {
-              checkForChanges(nodes);
+              checkForChanges(n);
             }}
           >
             <IconComponent name="Home" className="h-4 w-4" />
@@ -92,9 +100,8 @@ export default function Header(): JSX.Element {
               variant={location.pathname === "/store" ? "primary" : "secondary"}
               size="sm"
               onClick={() => {
-                checkForChanges(nodes);
+                checkForChanges(n);
               }}
-              data-testid="button-store"
             >
               <IconComponent name="Store" className="h-4 w-4" />
               <div className="flex-1">Store</div>
@@ -105,7 +112,7 @@ export default function Header(): JSX.Element {
       <div className="header-end-division lg:w-[30%]">
         <div className="header-end-display">
           <a
-            href="https://github.com/langflow-ai/langflow"
+            href="https://github.com/logspace-ai/langflow"
             target="_blank"
             rel="noreferrer"
             className="header-github-link gap-2"
@@ -120,7 +127,7 @@ export default function Header(): JSX.Element {
             rel="noreferrer"
             className="text-muted-foreground"
           >
-            <RiTwitterXFill className="side-bar-button-size" />
+            <FaTwitter className="side-bar-button-size" />
           </a>
           <a
             href="https://discord.gg/EqksyE2EX9"

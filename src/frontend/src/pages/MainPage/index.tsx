@@ -1,21 +1,17 @@
 import { Group, ToyBrick } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import DropdownButton from "../../components/DropdownButtonComponent";
 import IconComponent from "../../components/genericIconComponent";
 import PageLayout from "../../components/pageLayout";
 import SidebarNav from "../../components/sidebarComponent";
 import { Button } from "../../components/ui/button";
-import { CONSOLE_ERROR_MSG } from "../../constants/alerts_constants";
-import {
-  MY_COLLECTION_DESC,
-  USER_PROJECTS_HEADER,
-} from "../../constants/constants";
-import NewFlowModal from "../../modals/NewFlowModal";
+import { USER_PROJECTS_HEADER } from "../../constants/constants";
 import useAlertStore from "../../stores/alertStore";
 import useFlowsManagerStore from "../../stores/flowsManagerStore";
 import { downloadFlows } from "../../utils/reactflowUtils";
 export default function HomePage(): JSX.Element {
+  const addFlow = useFlowsManagerStore((state) => state.addFlow);
   const uploadFlow = useFlowsManagerStore((state) => state.uploadFlow);
   const setCurrentFlowId = useFlowsManagerStore(
     (state) => state.setCurrentFlowId
@@ -25,7 +21,6 @@ export default function HomePage(): JSX.Element {
   const setErrorData = useAlertStore((state) => state.setErrorData);
   const location = useLocation();
   const pathname = location.pathname;
-  const [openModal, setOpenModal] = useState(false);
   const is_component = pathname === "/components";
   const dropdownOptions = [
     {
@@ -45,7 +40,7 @@ export default function HomePage(): JSX.Element {
           })
           .catch((error) => {
             setErrorData({
-              title: CONSOLE_ERROR_MSG,
+              title: "Error uploading file",
               list: [error],
             });
           });
@@ -76,7 +71,7 @@ export default function HomePage(): JSX.Element {
   return (
     <PageLayout
       title={USER_PROJECTS_HEADER}
-      description={MY_COLLECTION_DESC}
+      description="Manage your personal projects. Download or upload your collection."
       button={
         <div className="flex gap-2">
           <Button
@@ -99,10 +94,12 @@ export default function HomePage(): JSX.Element {
           </Button>
           <DropdownButton
             firstButtonName="New Project"
-            onFirstBtnClick={() => setOpenModal(true)}
+            onFirstBtnClick={() => {
+              addFlow(true).then((id) => {
+                navigate("/flow/" + id);
+              });
+            }}
             options={dropdownOptions}
-            plusButton={true}
-            dropdownOptions={false}
           />
         </div>
       }
@@ -115,7 +112,6 @@ export default function HomePage(): JSX.Element {
           <Outlet />
         </div>
       </div>
-      <NewFlowModal open={openModal} setOpen={setOpenModal} />
     </PageLayout>
   );
 }

@@ -88,7 +88,6 @@ export function TagsSelector({
                 updateTags(tag.name);
               }}
               key={idx}
-              data-testid={`tag-selector-${tag.name}`}
             >
               <Badge
                 key={idx}

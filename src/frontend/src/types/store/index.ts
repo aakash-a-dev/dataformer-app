@@ -18,8 +18,3 @@ export type StoreComponentResponse = {
   authorized: boolean;
   results: storeComponent[];
 };
-
-export type shortcutsStoreType = {
-  openCodeModalWShortcut: boolean;
-  handleModalWShortcut: (str: string) => void;
-};

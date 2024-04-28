@@ -7,7 +7,6 @@ export default function ToggleShadComponent({
   disabled,
   size,
   id = "",
-  editNode = false,
 }: ToggleComponentType): JSX.Element {
   let scaleX, scaleY;
   switch (size) {
@@ -32,7 +31,6 @@ export default function ToggleShadComponent({
     <div className={disabled ? "pointer-events-none cursor-not-allowed " : ""}>
       <Switch
         id={id}
-        data-testid={id}
         style={{
           transform: `scaleX(${scaleX}) scaleY(${scaleY})`,
         }}

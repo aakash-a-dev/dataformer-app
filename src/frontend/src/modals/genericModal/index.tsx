@@ -6,13 +6,6 @@ import { Badge } from "../../components/ui/badge";
 import { Button } from "../../components/ui/button";
 import { Textarea } from "../../components/ui/textarea";
 import {
-  BUG_ALERT,
-  PROMPT_ERROR_ALERT,
-  PROMPT_SUCCESS_ALERT,
-  TEMP_NOTICE_ALERT,
-} from "../../constants/alerts_constants";
-import {
-  EDIT_TEXT_PLACEHOLDER,
   INVALID_CHARACTERS,
   MAX_WORDS_HIGHLIGHT,
   PROMPT_DIALOG_SUBTITLE,
@@ -97,23 +90,13 @@ export default function GenericModal({
   useEffect(() => {
     setInputValue(value);
   }, [value, modalOpen]);
+
   const coloredContent = (inputValue || "")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
-    .replace(regexHighlight, (match, p1, p2) => {
-      // Decide which group was matched. If p1 is not undefined, do nothing
-      // we don't want to change the text. If p2 is not undefined, then we
-      // have a variable, so we should highlight it.
-      // ! This will not work with multiline or indented json yet
-      if (p1 !== undefined) {
-        return match;
-      } else if (p2 !== undefined) {
-        return varHighlightHTML({ name: p2 });
-      }
-
-      return match;
-    })
+    .replace(regexHighlight, varHighlightHTML({ name: "$1" }))
     .replace(/\n/g, "<br />");
+
   function getClassByNumberLength(): string {
     let sumOfCaracteres: number = 0;
     wordsHighlight.forEach((element) => {
@@ -150,17 +133,17 @@ export default function GenericModal({
           }
           if (!inputVariables || inputVariables.length === 0) {
             setNoticeData({
-              title: TEMP_NOTICE_ALERT,
+              title: "Your template does not have any variables.",
             });
           } else {
             setSuccessData({
-              title: PROMPT_SUCCESS_ALERT,
+              title: "Prompt is ready",
             });
           }
         } else {
           setIsEdit(true);
           setErrorData({
-            title: BUG_ALERT,
+            title: "Something went wrong, please try again",
           });
         }
       })
@@ -168,8 +151,8 @@ export default function GenericModal({
         console.log(error);
         setIsEdit(true);
         return setErrorData({
-          title: PROMPT_ERROR_ALERT,
-          list: [error.response.data.detail ?? ""],
+          title: "There is something wrong with this prompt, please review it",
+          list: [error.toString()],
         });
       });
   }
@@ -199,7 +182,7 @@ export default function GenericModal({
           {myModalTitle}
         </span>
         <IconComponent
-          name={myModalTitle === "Edit Prompt" ? "TerminalSquare" : "FileText"}
+          name="FileText"
           className="h-6 w-6 pl-1 text-primary "
           aria-hidden="true"
         />
@@ -227,7 +210,7 @@ export default function GenericModal({
                   setInputValue(event.target.value);
                   checkVariables(event.target.value);
                 }}
-                placeholder={EDIT_TEXT_PLACEHOLDER}
+                placeholder="Type message here."
                 onKeyDown={(e) => {
                   handleKeyDown(e, inputValue, "");
                 }}
@@ -249,7 +232,7 @@ export default function GenericModal({
                 onChange={(event) => {
                   setInputValue(event.target.value);
                 }}
-                placeholder={EDIT_TEXT_PLACEHOLDER}
+                placeholder="Type message here."
                 onKeyDown={(e) => {
                   handleKeyDown(e, value, "");
                 }}
@@ -272,7 +255,7 @@ export default function GenericModal({
                   >
                     <div className="flex flex-wrap items-center">
                       <IconComponent
-                        name="Braces"
+                        name="Variable"
                         className=" -ml-px mr-1 flex h-4 w-4 text-primary"
                       />
                       <span className="text-md font-semibold text-primary">
