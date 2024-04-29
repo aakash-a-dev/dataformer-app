@@ -58,7 +58,7 @@ export default function Header(): JSX.Element {
     <div className="header-arrangement">
       <div className="header-start-display lg:w-[30%]">
         <Link to="/" onClick={() => checkForChanges(n)}>
-          <span className="ml-4 text-2xl">BhabhaAI</span>
+          <span className="ml-4 text-2xl">Dataformer</span>
         </Link>
         <MenuBar removeFunction={checkForChanges} />
       </div>

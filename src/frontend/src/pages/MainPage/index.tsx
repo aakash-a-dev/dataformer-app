@@ -48,12 +48,12 @@ export default function HomePage(): JSX.Element {
   ];
   const sidebarNavItems = [
     {
-      title: "Flows",
+      title: "My Datasets",
       href: "/flows",
       icon: <Group className="w-5 stroke-[1.5]" />,
     },
     {
-      title: "Components",
+      title: "Create Datasets",
       href: "/components",
       icon: <ToyBrick className="mx-[0.08rem] w-[1.1rem] stroke-[1.5]" />,
     },
@@ -69,8 +69,8 @@ export default function HomePage(): JSX.Element {
   // Personal flows display
   return (
     <PageLayout
-      title={USER_PROJECTS_HEADER}
-      description="Manage your personal projects. Download or upload your collection."
+      title={"Create Datasets for your LLM model"}
+      description="You can do so by clicking on the Start here button under Create Datsets"
       button={
         <div className="flex gap-2">
           <Button
@@ -82,24 +82,6 @@ export default function HomePage(): JSX.Element {
             <IconComponent name="Download" className="main-page-nav-button" />
             Download Collection
           </Button>
-          {/* <Button
-            variant="primary"
-            onClick={() => {
-              uploadFlows();
-            }}
-          >
-            <IconComponent name="Upload" className="main-page-nav-button" />
-            Upload Collection
-          </Button> */}
-          {/* <DropdownButton
-            firstButtonName="New Project"
-            onFirstBtnClick={() => {
-              addFlow(true).then((id) => {
-                navigate("/flow/" + id);
-              });
-            }}
-            options={dropdownOptions}
-          /> */}
         </div>
       }
     >
