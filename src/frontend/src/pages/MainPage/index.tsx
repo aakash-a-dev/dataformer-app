@@ -1,7 +1,7 @@
 import { Group, ToyBrick } from "lucide-react";
 import { useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import DropdownButton from "../../components/DropdownButtonComponent";
+// import DropdownButton from "../../components/DropdownButtonComponent";
 import IconComponent from "../../components/genericIconComponent";
 import PageLayout from "../../components/pageLayout";
 import SidebarNav from "../../components/sidebarComponent";
@@ -32,9 +32,8 @@ export default function HomePage(): JSX.Element {
         })
           .then((id) => {
             setSuccessData({
-              title: `${
-                is_component ? "Component" : "Flow"
-              } uploaded successfully`,
+              title: `${is_component ? "Component" : "Flow"
+                } uploaded successfully`,
             });
             if (!is_component) navigate("/flow/" + id);
           })
@@ -83,7 +82,7 @@ export default function HomePage(): JSX.Element {
             <IconComponent name="Download" className="main-page-nav-button" />
             Download Collection
           </Button>
-          <Button
+          {/* <Button
             variant="primary"
             onClick={() => {
               uploadFlows();
@@ -91,8 +90,8 @@ export default function HomePage(): JSX.Element {
           >
             <IconComponent name="Upload" className="main-page-nav-button" />
             Upload Collection
-          </Button>
-          <DropdownButton
+          </Button> */}
+          {/* <DropdownButton
             firstButtonName="New Project"
             onFirstBtnClick={() => {
               addFlow(true).then((id) => {
@@ -100,7 +99,7 @@ export default function HomePage(): JSX.Element {
               });
             }}
             options={dropdownOptions}
-          />
+          /> */}
         </div>
       }
     >

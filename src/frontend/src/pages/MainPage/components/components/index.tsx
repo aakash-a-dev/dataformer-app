@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import PaginatorComponent from "../../../../components/PaginatorComponent";
+// import PaginatorComponent from "../../../../components/PaginatorComponent";
 import CollectionCardComponent from "../../../../components/cardComponent";
 import CardsWrapComponent from "../../../../components/cardsWrapComponent";
 import IconComponent from "../../../../components/genericIconComponent";
@@ -69,9 +69,8 @@ export default function ComponentsComponent({
         })
           .then(() => {
             setSuccessData({
-              title: `${
-                is_component ? "Component" : "Flow"
-              } uploaded successfully`,
+              title: `${is_component ? "Component" : "Flow"
+                } uploaded successfully`,
             });
           })
           .catch((error) => {
@@ -136,9 +135,8 @@ export default function ComponentsComponent({
                     onDelete={() => {
                       removeFlow(item.id);
                       setSuccessData({
-                        title: `${
-                          item.is_component ? "Component" : "Flow"
-                        } deleted successfully!`,
+                        title: `${item.is_component ? "Component" : "Flow"
+                          } deleted successfully!`,
                       });
                       resetFilter();
                     }}
@@ -181,7 +179,7 @@ export default function ComponentsComponent({
         </div>
         {!isLoading && data.length > 0 && (
           <div className="relative py-6">
-            <PaginatorComponent
+            {/* <PaginatorComponent
               storeComponent={true}
               pageIndex={pageIndex}
               pageSize={pageSize}
@@ -194,7 +192,7 @@ export default function ComponentsComponent({
                 setPageIndex(pageIndex);
                 setPageSize(pageSize);
               }}
-            ></PaginatorComponent>
+            ></PaginatorComponent> */}
           </div>
         )}
       </div>

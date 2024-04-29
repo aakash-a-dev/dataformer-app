@@ -1,6 +1,5 @@
 import { cloneDeep } from "lodash";
 import { useContext, useEffect, useRef, useState } from "react";
-import PaginatorComponent from "../../components/PaginatorComponent";
 import ShadTooltip from "../../components/ShadTooltipComponent";
 import IconComponent from "../../components/genericIconComponent";
 import Header from "../../components/headerComponent";
@@ -77,21 +76,21 @@ export default function AdminPage() {
       });
   }
 
-  function handleChangePagination(pageIndex: number, pageSize: number) {
-    setLoadingUsers(true);
-    setPageSize(pageSize);
-    setPageIndex(pageIndex);
-    getUsersPage(pageSize * (pageIndex - 1), pageSize)
-      .then((users) => {
-        setTotalRowsCount(users["total_count"]);
-        userList.current = users["users"];
-        setFilterUserList(users["users"]);
-        setLoadingUsers(false);
-      })
-      .catch((error) => {
-        setLoadingUsers(false);
-      });
-  }
+  // function handleChangePagination(pageIndex: number, pageSize: number) {
+  //   setLoadingUsers(true);
+  //   setPageSize(pageSize);
+  //   setPageIndex(pageIndex);
+  //   getUsersPage(pageSize * (pageIndex - 1), pageSize)
+  //     .then((users) => {
+  //       setTotalRowsCount(users["total_count"]);
+  //       userList.current = users["users"];
+  //       setFilterUserList(users["users"]);
+  //       setLoadingUsers(false);
+  //     })
+  //     .catch((error) => {
+  //       setLoadingUsers(false);
+  //     });
+  // }
 
   function resetFilter() {
     setPageIndex(1);
@@ -444,14 +443,14 @@ export default function AdminPage() {
                 </Table>
               </div>
 
-              <PaginatorComponent
+              {/* <PaginatorComponent
                 pageIndex={index}
                 pageSize={size}
                 totalRowsCount={totalRowsCount}
                 paginate={(pageSize, pageIndex) => {
                   handleChangePagination(pageIndex, pageSize);
                 }}
-              ></PaginatorComponent>
+              ></PaginatorComponent> */}
             </>
           )}
         </div>

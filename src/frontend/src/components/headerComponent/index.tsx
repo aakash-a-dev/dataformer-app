@@ -31,7 +31,7 @@ export default function Header(): JSX.Element {
   const { logout, autoLogin, isAdmin, userData } = useContext(AuthContext);
   const navigate = useNavigate();
   const removeFlow = useFlowsManagerStore((store) => store.removeFlow);
-  const hasStore = useStoreStore((state) => state.hasStore);
+  // const hasStore = useStoreStore((state) => state.hasStore);
   const { id } = useParams();
   const n = useFlowStore((state) => state.nodes);
 
@@ -58,7 +58,7 @@ export default function Header(): JSX.Element {
     <div className="header-arrangement">
       <div className="header-start-display lg:w-[30%]">
         <Link to="/" onClick={() => checkForChanges(n)}>
-          <span className="ml-4 text-2xl">⛓️</span>
+          <span className="ml-4 text-2xl">BhabhaAI</span>
         </Link>
         <MenuBar removeFunction={checkForChanges} />
       </div>
@@ -68,7 +68,7 @@ export default function Header(): JSX.Element {
             className="gap-2"
             variant={
               location.pathname === "/flows" ||
-              location.pathname === "/components"
+                location.pathname === "/components"
                 ? "primary"
                 : "secondary"
             }
@@ -93,7 +93,7 @@ export default function Header(): JSX.Element {
             <div className="flex-1">Community Examples</div>
           </Button>
         </Link> */}
-        {hasStore && (
+        {/* {hasStore && (
           <Link to="/store">
             <Button
               className="gap-2"
@@ -107,19 +107,18 @@ export default function Header(): JSX.Element {
               <div className="flex-1">Store</div>
             </Button>
           </Link>
-        )}
+        )} */}
       </div>
       <div className="header-end-division lg:w-[30%]">
         <div className="header-end-display">
           <a
-            href="https://github.com/logspace-ai/langflow"
+            href="https://github.com/BhabhaAI/langflow-fork"
             target="_blank"
             rel="noreferrer"
             className="header-github-link gap-2"
           >
             <FaGithub className="h-5 w-5" />
-            <div className="hidden lg:block">Star</div>
-            <div className="header-github-display">{stars ?? 0}</div>
+            <div className="hidden lg:block p-2">Star</div>
           </a>
           <a
             href="https://twitter.com/langflow_ai"
@@ -185,7 +184,7 @@ export default function Header(): JSX.Element {
                       "h-7 w-7 rounded-full focus-visible:outline-0 " +
                       (userData?.profile_image ??
                         gradients[
-                          parseInt(userData?.id ?? "", 30) % gradients.length
+                        parseInt(userData?.id ?? "", 30) % gradients.length
                         ])
                     }
                   />

@@ -52,7 +52,7 @@ export default function App() {
       if (
         alertsList.length > 0 &&
         JSON.stringify(alertsList[alertsList.length - 1].data) ===
-          JSON.stringify(errorData)
+        JSON.stringify(errorData)
       ) {
         return;
       }
@@ -70,7 +70,7 @@ export default function App() {
       if (
         alertsList.length > 0 &&
         JSON.stringify(alertsList[alertsList.length - 1].data) ===
-          JSON.stringify(noticeData)
+        JSON.stringify(noticeData)
       ) {
         return;
       }
@@ -88,7 +88,7 @@ export default function App() {
       if (
         alertsList.length > 0 &&
         JSON.stringify(alertsList[alertsList.length - 1].data) ===
-          JSON.stringify(successData)
+        JSON.stringify(successData)
       ) {
         return;
       }
