@@ -1,17 +1,21 @@
 import { Group, ToyBrick } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-// import DropdownButton from "../../components/DropdownButtonComponent";
+import DropdownButton from "../../components/DropdownButtonComponent";
 import IconComponent from "../../components/genericIconComponent";
 import PageLayout from "../../components/pageLayout";
 import SidebarNav from "../../components/sidebarComponent";
 import { Button } from "../../components/ui/button";
-import { USER_PROJECTS_HEADER } from "../../constants/constants";
+import { CONSOLE_ERROR_MSG } from "../../constants/alerts_constants";
+import {
+  MY_COLLECTION_DESC,
+  USER_PROJECTS_HEADER,
+} from "../../constants/constants";
+import NewFlowModal from "../../modals/NewFlowModal";
 import useAlertStore from "../../stores/alertStore";
 import useFlowsManagerStore from "../../stores/flowsManagerStore";
 import { downloadFlows } from "../../utils/reactflowUtils";
 export default function HomePage(): JSX.Element {
-  const addFlow = useFlowsManagerStore((state) => state.addFlow);
   const uploadFlow = useFlowsManagerStore((state) => state.uploadFlow);
   const setCurrentFlowId = useFlowsManagerStore(
     (state) => state.setCurrentFlowId
@@ -21,6 +25,7 @@ export default function HomePage(): JSX.Element {
   const setErrorData = useAlertStore((state) => state.setErrorData);
   const location = useLocation();
   const pathname = location.pathname;
+  const [openModal, setOpenModal] = useState(false);
   const is_component = pathname === "/components";
   const dropdownOptions = [
     {
@@ -32,14 +37,15 @@ export default function HomePage(): JSX.Element {
         })
           .then((id) => {
             setSuccessData({
-              title: `${is_component ? "Component" : "Flow"
-                } uploaded successfully`,
+              title: `${
+                is_component ? "Component" : "Flow"
+              } uploaded successfully`,
             });
             if (!is_component) navigate("/flow/" + id);
           })
           .catch((error) => {
             setErrorData({
-              title: "Error uploading file",
+              title: CONSOLE_ERROR_MSG,
               list: [error],
             });
           });
@@ -48,12 +54,12 @@ export default function HomePage(): JSX.Element {
   ];
   const sidebarNavItems = [
     {
-      title: "My Datasets",
+      title: "Flows",
       href: "/flows",
       icon: <Group className="w-5 stroke-[1.5]" />,
     },
     {
-      title: "Create Datasets",
+      title: "Components",
       href: "/components",
       icon: <ToyBrick className="mx-[0.08rem] w-[1.1rem] stroke-[1.5]" />,
     },
@@ -69,8 +75,8 @@ export default function HomePage(): JSX.Element {
   // Personal flows display
   return (
     <PageLayout
-      title={"Create Datasets for your LLM model"}
-      description="You can do so by clicking on the Start here button under Create Datsets"
+      title={USER_PROJECTS_HEADER}
+      description={MY_COLLECTION_DESC}
       button={
         <div className="flex gap-2">
           <Button
@@ -82,6 +88,22 @@ export default function HomePage(): JSX.Element {
             <IconComponent name="Download" className="main-page-nav-button" />
             Download Collection
           </Button>
+          <Button
+            variant="primary"
+            onClick={() => {
+              uploadFlows();
+            }}
+          >
+            <IconComponent name="Upload" className="main-page-nav-button" />
+            Upload Collection
+          </Button>
+          <DropdownButton
+            firstButtonName="New Project"
+            onFirstBtnClick={() => setOpenModal(true)}
+            options={dropdownOptions}
+            plusButton={true}
+            dropdownOptions={false}
+          />
         </div>
       }
     >
@@ -93,6 +115,7 @@ export default function HomePage(): JSX.Element {
           <Outlet />
         </div>
       </div>
+      <NewFlowModal open={openModal} setOpen={setOpenModal} />
     </PageLayout>
   );
 }

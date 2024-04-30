@@ -1,5 +1,6 @@
 import { cloneDeep } from "lodash";
 import { useContext, useEffect, useRef, useState } from "react";
+import PaginatorComponent from "../../components/PaginatorComponent";
 import ShadTooltip from "../../components/ShadTooltipComponent";
 import IconComponent from "../../components/genericIconComponent";
 import Header from "../../components/headerComponent";
@@ -15,6 +16,14 @@ import {
   TableHeader,
   TableRow,
 } from "../../components/ui/table";
+import {
+  USER_ADD_ERROR_ALERT,
+  USER_ADD_SUCCESS_ALERT,
+  USER_DEL_ERROR_ALERT,
+  USER_DEL_SUCCESS_ALERT,
+  USER_EDIT_ERROR_ALERT,
+  USER_EDIT_SUCCESS_ALERT,
+} from "../../constants/alerts_constants";
 import {
   ADMIN_HEADER_DESCRIPTION,
   ADMIN_HEADER_TITLE,
@@ -76,21 +85,21 @@ export default function AdminPage() {
       });
   }
 
-  // function handleChangePagination(pageIndex: number, pageSize: number) {
-  //   setLoadingUsers(true);
-  //   setPageSize(pageSize);
-  //   setPageIndex(pageIndex);
-  //   getUsersPage(pageSize * (pageIndex - 1), pageSize)
-  //     .then((users) => {
-  //       setTotalRowsCount(users["total_count"]);
-  //       userList.current = users["users"];
-  //       setFilterUserList(users["users"]);
-  //       setLoadingUsers(false);
-  //     })
-  //     .catch((error) => {
-  //       setLoadingUsers(false);
-  //     });
-  // }
+  function handleChangePagination(pageIndex: number, pageSize: number) {
+    setLoadingUsers(true);
+    setPageSize(pageSize);
+    setPageIndex(pageIndex);
+    getUsersPage(pageSize * (pageIndex - 1), pageSize)
+      .then((users) => {
+        setTotalRowsCount(users["total_count"]);
+        userList.current = users["users"];
+        setFilterUserList(users["users"]);
+        setLoadingUsers(false);
+      })
+      .catch((error) => {
+        setLoadingUsers(false);
+      });
+  }
 
   function resetFilter() {
     setPageIndex(1);
@@ -116,12 +125,12 @@ export default function AdminPage() {
       .then((res) => {
         resetFilter();
         setSuccessData({
-          title: "Success! User deleted!",
+          title: USER_DEL_SUCCESS_ALERT,
         });
       })
       .catch((error) => {
         setErrorData({
-          title: "Error on delete user",
+          title: USER_DEL_ERROR_ALERT,
           list: [error["response"]["data"]["detail"]],
         });
       });
@@ -132,12 +141,12 @@ export default function AdminPage() {
       .then((res) => {
         resetFilter();
         setSuccessData({
-          title: "Success! User edited!",
+          title: USER_EDIT_SUCCESS_ALERT,
         });
       })
       .catch((error) => {
         setErrorData({
-          title: "Error on edit user",
+          title: USER_EDIT_ERROR_ALERT,
           list: [error["response"]["data"]["detail"]],
         });
       });
@@ -151,12 +160,12 @@ export default function AdminPage() {
       .then((res) => {
         resetFilter();
         setSuccessData({
-          title: "Success! User edited!",
+          title: USER_EDIT_SUCCESS_ALERT,
         });
       })
       .catch((error) => {
         setErrorData({
-          title: "Error on edit user",
+          title: USER_EDIT_ERROR_ALERT,
           list: [error["response"]["data"]["detail"]],
         });
       });
@@ -169,12 +178,12 @@ export default function AdminPage() {
       .then((res) => {
         resetFilter();
         setSuccessData({
-          title: "Success! User edited!",
+          title: USER_EDIT_SUCCESS_ALERT,
         });
       })
       .catch((error) => {
         setErrorData({
-          title: "Error on edit user",
+          title: USER_EDIT_ERROR_ALERT,
           list: [error["response"]["data"]["detail"]],
         });
       });
@@ -189,13 +198,13 @@ export default function AdminPage() {
         }).then((res) => {
           resetFilter();
           setSuccessData({
-            title: "Success! New user added!",
+            title: USER_ADD_SUCCESS_ALERT,
           });
         });
       })
       .catch((error) => {
         setErrorData({
-          title: "Error when adding new user",
+          title: USER_ADD_ERROR_ALERT,
           list: [error.response.data.detail],
         });
       });
@@ -443,14 +452,14 @@ export default function AdminPage() {
                 </Table>
               </div>
 
-              {/* <PaginatorComponent
+              <PaginatorComponent
                 pageIndex={index}
                 pageSize={size}
                 totalRowsCount={totalRowsCount}
                 paginate={(pageSize, pageIndex) => {
                   handleChangePagination(pageIndex, pageSize);
                 }}
-              ></PaginatorComponent> */}
+              ></PaginatorComponent>
             </>
           )}
         </div>
