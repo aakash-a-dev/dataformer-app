@@ -65,7 +65,7 @@ RUN --mount=type=cache,target=/root/.cache \
 WORKDIR $PYSETUP_PATH
 # Copy just one file to avoid rebuilding the whole image
 COPY poetry.lock pyproject.toml ./
-COPY ./src/backend/langflow ./src/backend/langflow
+COPY ./src/backend/dfapp ./src/backend/dfapp
 COPY ./src/backend/base/pyproject.toml ./src/backend/base/pyproject.toml
 # Copy README.md to the build context
 COPY README.md .
@@ -86,7 +86,7 @@ COPY --from=builder-base $POETRY_HOME $POETRY_HOME
 COPY --from=builder-base $PYSETUP_PATH $PYSETUP_PATH
 
 # Copy just one file to avoid rebuilding the whole image
-COPY ./src/backend/langflow ./src/backend/langflow
+COPY ./src/backend/dfapp ./src/backend/dfapp
 # quicker install as runtime deps are already installed
 RUN --mount=type=cache,target=/root/.cache \
     poetry install --with=dev --extras deploy

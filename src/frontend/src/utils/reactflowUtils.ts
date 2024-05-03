@@ -10,7 +10,7 @@ import {
 import ShortUniqueId from "short-unique-id";
 import {
   INPUT_TYPES,
-  LANGFLOW_SUPPORTED_TYPES,
+  DFAPP_SUPPORTED_TYPES,
   OUTPUT_TYPES,
   SUCCESS_BUILD,
   specialCharsRegex,
@@ -806,7 +806,7 @@ function updateGroupNodeTemplate(template: APITemplateType) {
     let type = template[key].type;
     let input_types = template[key].input_types;
     if (
-      LANGFLOW_SUPPORTED_TYPES.has(type) &&
+      DFAPP_SUPPORTED_TYPES.has(type) &&
       !template[key].required &&
       !input_types
     ) {
@@ -1232,6 +1232,22 @@ export function templatesGenerator(data: APIObjectType) {
     });
     return acc;
   }, {});
+}
+
+export function extractFieldsFromComponenents(data: APIObjectType) {
+  const fields = new Set<string>();
+  Object.keys(data).forEach((key) => {
+    Object.keys(data[key]).forEach((kind) => {
+      Object.keys(data[key][kind].template).forEach((field) => {
+        if (
+          data[key][kind].template[field].display_name &&
+          data[key][kind].template[field].show
+        )
+          fields.add(data[key][kind].template[field].display_name!);
+      });
+    });
+  });
+  return fields;
 }
 
 export function downloadFlow(

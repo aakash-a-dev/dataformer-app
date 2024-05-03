@@ -77,8 +77,8 @@ export default function ImageViewer({image }) {
                 {IMGViewErrorTitle}
               </div>
               <div className="flex align-center justify-center">
-                <div className="langflow-chat-desc flex align-center justify-center">
-                  <div className="langflow-chat-desc-span">
+                <div className="dfappchat-desc flex align-center justify-center">
+                  <div className="dfappchat-desc-span">
                     {IMGViewErrorMSG}
                   </div>
                 </div>

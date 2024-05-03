@@ -1,6 +1,6 @@
-# Running LangFlow with Docker
+# Running Dataformer App with Docker
 
-This guide will help you get LangFlow up and running using Docker and Docker Compose.
+This guide will help you get Dataformer App up and running using Docker and Docker Compose.
 
 ## Prerequisites
 
@@ -9,16 +9,16 @@ This guide will help you get LangFlow up and running using Docker and Docker Com
 
 ## Steps
 
-1. Clone the LangFlow repository:
+1. Clone the Dataformer App repository:
 
    ```sh
-   git clone https://github.com/langflow-ai/langflow.git
+   git clone https://github.com/DataformerAI/dataformer-app.git
    ```
 
 2. Navigate to the `docker_example` directory:
 
    ```sh
-   cd langflow/docker_example
+   cd dataformer-app/docker_example
    ```
 
 3. Run the Docker Compose file:
@@ -27,24 +27,24 @@ This guide will help you get LangFlow up and running using Docker and Docker Com
    docker compose up
    ```
 
-LangFlow will now be accessible at [http://localhost:7860/](http://localhost:7860/).
+Dataformer App will now be accessible at [http://localhost:7860/](http://localhost:7860/).
 
 ## Docker Compose Configuration
 
-The Docker Compose configuration spins up two services: `langflow` and `postgres`.
+The Docker Compose configuration spins up two services: `dfapp` and `postgres`.
 
-### LangFlow Service
+### Dataformer App Service
 
-The `langflow` service uses the `langflowai/langflow:latest` Docker image and exposes port 7860. It depends on the `postgres` service.
+The `dfapp` service uses the `dataformer/dfapp:latest` Docker image and exposes port 7860. It depends on the `postgres` service.
 
 Environment variables:
 
-- `LANGFLOW_DATABASE_URL`: The connection string for the PostgreSQL database.
-- `LANGFLOW_CONFIG_DIR`: The directory where LangFlow stores logs, file storage, monitor data, and secret keys.
+- `DFAPP_DATABASE_URL`: The connection string for the PostgreSQL database.
+- `DFAPP_CONFIG_DIR`: The directory where Dataformer App stores logs, file storage, monitor data, and secret keys.
 
 Volumes:
 
-- `langflow-data`: This volume is mapped to `/var/lib/langflow` in the container.
+- `dfapp-data`: This volume is mapped to `/var/lib/dfapp` in the container.
 
 ### PostgreSQL Service
 
@@ -58,8 +58,8 @@ Environment variables:
 
 Volumes:
 
-- `langflow-postgres`: This volume is mapped to `/var/lib/postgresql/data` in the container.
+- `dfapp-postgres`: This volume is mapped to `/var/lib/postgresql/data` in the container.
 
-## Switching to a Specific LangFlow Version
+## Switching to a Specific Dataformer App Version
 
-If you want to use a specific version of LangFlow, you can modify the `image` field under the `langflow` service in the Docker Compose file. For example, to use version 1.0-alpha, change `langflowai/langflow:latest` to `langflowai/langflow:1.0-alpha`.
+If you want to use a specific version of Dataformer App, you can modify the `image` field under the `dfapp` service in the Docker Compose file. For example, to use version 0.0.1, change `dataformer/dfapp:latest` to `dataformer/dfapp:0.0.1`.

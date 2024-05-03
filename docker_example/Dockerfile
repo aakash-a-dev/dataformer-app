@@ -1,3 +1,3 @@
-FROM langflowai/langflow:latest
+FROM dataformer/dfapp:latest
 
-CMD ["python", "-m", "langflow", "run", "--host", "0.0.0.0", "--port", "7860"]
+CMD ["python", "-m", "dfapp", "run", "--host", "0.0.0.0", "--port", "7860"]

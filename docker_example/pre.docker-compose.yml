@@ -1,30 +1,30 @@
 version: "3.8"
 
 services:
-  langflow:
-    image: langflowai/langflow:1.0-alpha
+  dfapp:
+    image: dataformer/dfapp:0.0.1
     ports:
       - "7860:7860"
     depends_on:
       - postgres
     environment:
-      - LANGFLOW_DATABASE_URL=postgresql://langflow:langflow@postgres:5432/langflow
+      - DFAPP_DATABASE_URL=postgresql://dfapp:dfapp@postgres:5432/dfapp
       # This variable defines where the logs, file storage, monitor data and secret keys are stored.
-      - LANGFLOW_CONFIG_DIR=/var/lib/langflow
+      - DFAPP_CONFIG_DIR=/var/lib/dfapp
     volumes:
-      - langflow-data:/var/lib/langflow
+      - dfapp-data:/var/lib/dfapp
 
   postgres:
     image: postgres:16
     environment:
-      POSTGRES_USER: langflow
-      POSTGRES_PASSWORD: langflow
-      POSTGRES_DB: langflow
+      POSTGRES_USER: dfapp
+      POSTGRES_PASSWORD: dfapp
+      POSTGRES_DB: dfapp
     ports:
       - "5432:5432"
     volumes:
-      - langflow-postgres:/var/lib/postgresql/data
+      - dfapp-postgres:/var/lib/postgresql/data
 
 volumes:
-  langflow-postgres:
-  langflow-data:
+  dfapp-postgres:
+  dfapp-data:

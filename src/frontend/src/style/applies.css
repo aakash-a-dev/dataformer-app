@@ -205,11 +205,11 @@
   .flow-page-positioning {
     @apply h-full w-full overflow-hidden;
   }
-  .langflow-page-icon {
+  .dfapp-page-icon {
     @apply absolute bottom-2 left-7 flex h-6 cursor-pointer flex-col items-center justify-start overflow-hidden rounded-lg bg-foreground px-2 text-center font-sans text-xs tracking-wide text-secondary transition-all duration-500 ease-in-out;
   }
 
-  .langflow-page-icon:hover {
+  .dfapp-page-icon:hover {
     @apply hover:h-12;
   }
 
@@ -323,7 +323,7 @@
     muted-foreground is too strong, maybe use a lighter shade of it?
 
      */
-    @apply border-none ring ring-muted-foreground;
+    @apply border-none ring grayscale;
   }
   .built-invalid-status {
     @apply border-none ring ring-[#FF9090];
@@ -1015,19 +1015,19 @@
   .chat-alert-box {
     @apply flex-max-width h-full flex-col items-center justify-center text-center align-middle;
   }
-  .langflow-chat-span {
+  .dfapp-chat-span {
     @apply text-lg text-foreground;
   }
-  .langflow-chat-desc {
+  .dfapp-chat-desc {
     @apply w-2/4 rounded-md border border-border bg-muted px-6 py-8;
   }
-  .langflow-chat-desc-span {
+  .dfapp-chat-desc-span {
     @apply text-base text-muted-foreground;
   }
-  .langflow-chat-input-div {
+  .dfapp-chat-input-div {
     @apply flex-max-width flex-col items-center justify-between px-8 pb-6;
   }
-  .langflow-chat-input {
+  .dfapp-chat-input {
     @apply relative w-full rounded-md shadow-sm;
   }
 

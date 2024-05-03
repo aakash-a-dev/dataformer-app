@@ -6,7 +6,7 @@ host ?= 0.0.0.0
 port ?= 7860
 env ?= .env
 open_browser ?= true
-path = src/backend/base/langflow/frontend
+path = src/backend/base/dfapp/frontend
 
 codespell:
 	@poetry install --with spelling
@@ -56,7 +56,7 @@ format:
 	cd src/frontend && npm run format
 
 lint:
-	poetry run mypy --namespace-packages -p "langflow"
+	poetry run mypy --namespace-packages -p "dfapp"
 
 install_frontend:
 	cd src/frontend && npm install
@@ -108,9 +108,9 @@ start:
 	@echo 'Running the CLI'
 
 ifeq ($(open_browser),false)
-	@make install_backend && poetry run langflow run --path $(path) --log-level $(log_level) --host $(host) --port $(port) --env-file $(env) --no-open-browser
+	@make install_backend && poetry run dfapp run --path $(path) --log-level $(log_level) --host $(host) --port $(port) --env-file $(env) --no-open-browser
 else
-	@make install_backend && poetry run langflow run --path $(path) --log-level $(log_level) --host $(host) --port $(port) --env-file $(env)
+	@make install_backend && poetry run dfapp run --path $(path) --log-level $(log_level) --host $(host) --port $(port) --env-file $(env)
 endif
 
 
@@ -118,7 +118,7 @@ endif
 setup_devcontainer:
 	make init
 	make build_frontend
-	poetry run langflow --path src/frontend/build
+	poetry run dfapp --path src/frontend/build
 
 setup_env:
 	@sh ./scripts/setup/update_poetry.sh 1.8.2
@@ -135,6 +135,7 @@ frontendc:
 install_backend:
 	@echo 'Installing backend dependencies'
 	@poetry install
+	@poetry run pre-commit install
 
 backend:
 	@echo 'Setting up the environment'
@@ -143,10 +144,10 @@ backend:
 	@-kill -9 `lsof -t -i:7860`
 ifdef login
 	@echo "Running backend autologin is $(login)";
-	LANGFLOW_AUTO_LOGIN=$(login) poetry run uvicorn --factory langflow.main:create_app --host 0.0.0.0 --port 7860 --reload --env-file .env --loop asyncio
+	DFAPP_AUTO_LOGIN=$(login) poetry run uvicorn --factory dfapp.main:create_app --host 0.0.0.0 --port 7860 --reload --env-file .env --loop asyncio
 else
 	@echo "Running backend respecting the .env file";
-	poetry run uvicorn --factory langflow.main:create_app --host 0.0.0.0 --port 7860 --reload --env-file .env  --loop asyncio
+	poetry run uvicorn --factory dfapp.main:create_app --host 0.0.0.0 --port 7860 --reload --env-file .env  --loop asyncio
 endif
 
 build_and_run:
@@ -156,7 +157,7 @@ build_and_run:
 	rm -rf src/backend/base/dist
 	make build
 	poetry run pip install dist/*.tar.gz
-	poetry run langflow run
+	poetry run dfapp run
 
 build_and_install:
 	@echo 'Removing dist folder'
@@ -166,7 +167,7 @@ build_and_install:
 
 build_frontend:
 	cd src/frontend && CI='' npm run build
-	cp -r src/frontend/build src/backend/base/langflow/frontend
+	cp -r src/frontend/build src/backend/base/dfapp/frontend
 
 build:
 	@echo 'Building the project'
@@ -174,21 +175,21 @@ build:
 ifdef base
 	make install_frontendci
 	make build_frontend
-	make build_langflow_base
+	make build_dfapp_base
 endif
 
 ifdef main
-	make build_langflow
+	make build_dfapp
 endif
 
-build_langflow_base:
+build_dfapp_base:
 	cd src/backend/base && poetry build
-	rm -rf src/backend/base/langflow/frontend
+	rm -rf src/backend/base/dfapp/frontend
 
-build_langflow_backup:
+build_dfapp_backup:
 	poetry lock && poetry build
 
-build_langflow:
+build_dfapp:
 	cd ./scripts && poetry run python update_dependencies.py
 	poetry lock
 	poetry build
@@ -210,7 +211,7 @@ endif
 lock_base:
 	cd src/backend/base && poetry lock
 
-lock_langflow:
+lock_dfapp:
 	poetry lock
 
 lock:
@@ -222,7 +223,7 @@ lock:
 publish_base:
 	cd src/backend/base && poetry publish
 
-publish_langflow:
+publish_dfapp:
 	poetry publish
 
 publish:
@@ -232,7 +233,7 @@ ifdef base
 endif
 
 ifdef main
-	make publish_langflow
+	make publish_dfapp
 endif
 
 help:

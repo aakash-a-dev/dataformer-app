@@ -32,8 +32,8 @@ def get_version_from_pypi(package_name):
 
 
 def update_pyproject_dependency(pyproject_path, version):
-    pattern = re.compile(r'langflow-base = \{ path = "\./src/backend/base", develop = true \}')
-    replacement = f'langflow-base = "^{version}"'
+    pattern = re.compile(r'dfapp-base = \{ path = "\./src/backend/base", develop = true \}')
+    replacement = f'dfapp-base = "^{version}"'
     with open(pyproject_path, "r") as file:
         content = file.read()
     content = pattern.sub(replacement, content)
@@ -54,8 +54,8 @@ if __name__ == "__main__":
         backup.write(original.read())
 
     # Reading version and updating pyproject.toml
-    langflow_base_path = Path(__file__).resolve().parent / "../src/backend/base/pyproject.toml"
-    version = read_version_from_pyproject(langflow_base_path)
+    dfapp_base_path = Path(__file__).resolve().parent / "../src/backend/base/pyproject.toml"
+    version = read_version_from_pyproject(dfapp_base_path)
     if version:
         update_pyproject_dependency(pyproject_path, version)
     else:

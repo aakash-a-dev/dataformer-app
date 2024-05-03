@@ -38,8 +38,8 @@ function CsvOutputComponent({
           {CSVViewErrorTitle}
         </div>
         <div className="align-center flex w-full justify-center">
-          <div className="langflow-chat-desc align-center flex justify-center px-6 py-8">
-            <div className="langflow-chat-desc-span">{CSVError}</div>
+          <div className="dfappchat-desc align-center flex justify-center px-6 py-8">
+            <div className="dfappchat-desc-span">{CSVError}</div>
           </div>
         </div>
       </div>
@@ -133,8 +133,8 @@ function CsvOutputComponent({
             {CSVViewErrorTitle}
           </div>
           <div className="align-center flex w-full justify-center">
-            <div className="langflow-chat-desc align-center flex justify-center px-6 py-8">
-              <div className="langflow-chat-desc-span">{CSVNoDataError}</div>
+            <div className="dfappchat-desc align-center flex justify-center px-6 py-8">
+              <div className="dfappchat-desc-span">{CSVNoDataError}</div>
             </div>
           </div>
         </div>
@@ -146,8 +146,8 @@ function CsvOutputComponent({
             {CSVViewErrorTitle}
           </div>
           <div className="align-center flex w-full justify-center">
-            <div className="langflow-chat-desc align-center flex justify-center px-6 py-8">
-              <div className="langflow-chat-desc-span">{CSVError}</div>
+            <div className="dfappchat-desc align-center flex justify-center px-6 py-8">
+              <div className="dfappchat-desc-span">{CSVError}</div>
             </div>
           </div>
         </div>

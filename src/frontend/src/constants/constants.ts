@@ -217,13 +217,13 @@ export const DESCRIPTIONS: string[] = [
   "Your Hub for Text Generation.",
   "Promptly Ingenious!",
   "Building Linguistic Labyrinths.",
-  "Langflow: Create, Chain, Communicate.",
+  "Dataformer: Create, Curate.",
   "Connect the Dots, Craft Language.",
   "Interactive Language Weaving.",
   "Generate, Innovate, Communicate.",
   "Conversation Catalyst Engine.",
   "Language Chainlink Master.",
-  "Design Dialogues with Langflow.",
+  "Design Dialogues with dfapp.",
   "Nurture NLP Nodes Here.",
   "Conversational Cartography Unlocked.",
   "Design, Develop, Dialogize.",
@@ -628,7 +628,7 @@ export function tabsArray(codes: string[], method: number) {
       {
         name: "Chat Widget HTML",
         description:
-          "Insert this code anywhere in your &lt;body&gt; tag. To use with react and other libs, check our <a class='link-color' href='https://langflow.org/guidelines/widget'>documentation</a>.",
+          "Insert this code anywhere in your &lt;body&gt; tag. To use with react and other libs, check our <a class='link-color' href='https://dataformer.ai/guidelines/widget'>documentation</a>.",
         mode: "html",
         image: "https://cdn-icons-png.flaticon.com/512/5968/5968350.png",
         language: "py",
@@ -662,7 +662,7 @@ export function tabsArray(codes: string[], method: number) {
     {
       name: "Chat Widget HTML",
       description:
-        "Insert this code anywhere in your &lt;body&gt; tag. To use with react and other libs, check our <a class='link-color' href='https://langflow.org/guidelines/widget'>documentation</a>.",
+        "Insert this code anywhere in your &lt;body&gt; tag. To use with react and other libs, check our <a class='link-color' href='https://dataformer.ai/guidelines/widget'>documentation</a>.",
       mode: "html",
       image: "https://cdn-icons-png.flaticon.com/512/5968/5968350.png",
       language: "py",
@@ -697,7 +697,7 @@ export const LAST_USED_SPAN_1 = "The last time this key was used.";
 export const LAST_USED_SPAN_2 =
   "Accurate to within the hour from the most recent usage.";
 
-export const LANGFLOW_SUPPORTED_TYPES = new Set([
+export const DFAPP_SUPPORTED_TYPES = new Set([
   "str",
   "bool",
   "float",
@@ -711,13 +711,22 @@ export const LANGFLOW_SUPPORTED_TYPES = new Set([
 
 export const priorityFields = new Set(["code", "template"]);
 
-export const INPUT_TYPES = new Set(["ChatInput", "TextInput", "KeyPairInput"]);
+export const INPUT_TYPES = new Set([
+  "ChatInput",
+  "TextInput",
+  "KeyPairInput",
+  "JsonInput",
+  "StringListInput",
+]);
 export const OUTPUT_TYPES = new Set([
   "ChatOutput",
   "TextOutput",
   "PDFOutput",
   "ImageOutput",
   "CSVOutput",
+  "JsonOutput",
+  "KeyPairOutput",
+  "StringListOutput",
 ]);
 
 export const CHAT_FIRST_INITIAL_TEXT =
@@ -739,7 +748,7 @@ export const INPUT_HANDLER_HOVER = "Avaliable input components:";
 export const OUTPUT_HANDLER_HOVER = "Avaliable output components:";
 export const TEXT_INPUT_MODAL_TITLE = "Text Inputs";
 export const OUTPUTS_MODAL_TITLE = "Text Outputs";
-export const LANGFLOW_CHAT_TITLE = "Langflow Chat";
+export const DFAPP_CHAT_TITLE = "Dataformer App Chat";
 export const CHAT_INPUT_PLACEHOLDER =
   "No chat input variables found. Click to run your flow.";
 export const CHAT_INPUT_PLACEHOLDER_SEND = "Send a message...";
@@ -747,9 +756,9 @@ export const EDIT_CODE_TITLE = "Edit Code";
 export const MY_COLLECTION_DESC =
   "Manage your personal projects. Download and upload entire collections.";
 export const STORE_DESC = "Explore community-shared flows and components.";
-export const STORE_TITLE = "Langflow Store";
+export const STORE_TITLE = "Dataformer Store";
 export const NO_API_KEY = "You don't have an API key. ";
-export const INSERT_API_KEY = "Insert your Langflow API key.";
+export const INSERT_API_KEY = "Insert your Dataformer App API key.";
 export const INVALID_API_KEY = "Your API key is not valid. ";
 export const CREATE_API_KEY = `Don’t have an API key? Sign up at`;
 export const STATUS_BUILD = "Build to validate status.";

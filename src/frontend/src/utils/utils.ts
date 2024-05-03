@@ -91,6 +91,20 @@ export function toTitleCase(
     .join(" ");
 }
 
+export function getUnavailableFields(variables: {
+  [key: string]: { default_fields?: string[] };
+}): {[name: string]: string} {
+  const unVariables:{[name: string]: string} = {};
+  Object.keys(variables).forEach((key) => {
+    if (variables[key].default_fields) {
+      variables[key].default_fields!.forEach((field) => {
+        unVariables[field] = key;
+      });
+    }
+  });
+  return unVariables;
+}
+
 export const upperCaseWords: string[] = ["llm", "uri"];
 export function checkUpperWords(str: string): string {
   const words = str.split(" ").map((word) => {
@@ -429,7 +443,7 @@ export function getPythonCode(flow: FlowType, tweak?: any[]): string {
   const flowName = flow.name;
   const tweaks = buildTweaks(flow);
 
-  return `from langflow.load import run_flow_from_json
+  return `from dfapp.load import run_flow_from_json
 TWEAKS = ${
     tweak && tweak.length > 0
       ? buildTweakObject(tweak)
@@ -456,9 +470,9 @@ export function getWidgetCode(
   const inputs = buildInputs();
   let chat_input_field = getChatInputField(flowState);
 
-  return `<script src="https://cdn.jsdelivr.net/gh/langflow-ai/langflow-embedded-chat@1.0_alpha/dist/build/static/js/bundle.min.js"></script>
+  return `<script src="https://cdn.jsdelivr.net/gh/dfappai/dfappembedded-chat@1.0_alpha/dist/build/static/js/bundle.min.js"></script>
 
-<langflow-chat
+<dfappchat
   window_title="${flowName}"
   flow_id="${flowId}"
   host_url="http://localhost:7860"${
@@ -468,7 +482,7 @@ export function getWidgetCode(
       : ""
   }
 
-></langflow-chat>`;
+></dfappchat>`;
 }
 
 export function truncateLongId(id: string): string {
@@ -523,7 +537,7 @@ export function tabsArray(codes: string[], method: number) {
       {
         name: "Chat Widget HTML",
         description:
-          "Insert this code anywhere in your &lt;body&gt; tag. To use with react and other libs, check our <a class='link-color' href='https://langflow.org/guidelines/widget'>documentation</a>.",
+          "Insert this code anywhere in your &lt;body&gt; tag. To use with react and other libs, check our <a class='link-color' href='https://dataformer.ai/guidelines/widget'>documentation</a>.",
         mode: "html",
         image: "https://cdn-icons-png.flaticon.com/512/5968/5968350.png",
         language: "py",
@@ -557,7 +571,7 @@ export function tabsArray(codes: string[], method: number) {
     {
       name: "Chat Widget HTML",
       description:
-        "Insert this code anywhere in your &lt;body&gt; tag. To use with react and other libs, check our <a class='link-color' href='https://langflow.org/guidelines/widget'>documentation</a>.",
+        "Insert this code anywhere in your &lt;body&gt; tag. To use with react and other libs, check our <a class='link-color' href='https://dataformer.ai/guidelines/widget'>documentation</a>.",
       mode: "html",
       image: "https://cdn-icons-png.flaticon.com/512/5968/5968350.png",
       language: "py",

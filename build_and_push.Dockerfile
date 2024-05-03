@@ -80,5 +80,5 @@ COPY --from=builder-base /app/dist/*.tar.gz ./
 RUN python -m pip install *.tar.gz --user
 
 WORKDIR /app
-ENTRYPOINT ["python", "-m", "langflow", "run"]
+ENTRYPOINT ["python", "-m", "dfapp", "run"]
 CMD ["--host", "0.0.0.0", "--port", "7860"]

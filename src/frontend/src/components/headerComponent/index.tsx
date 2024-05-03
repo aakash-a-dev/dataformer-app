@@ -50,7 +50,7 @@ export default function Header(): JSX.Element {
     <div className="header-arrangement">
       <div className="header-start-display lg:w-[30%]">
         <Link to="/" onClick={() => checkForChanges(nodes)}>
-          <span className="ml-4 text-2xl">⛓️</span>
+          <span className="ml-4 text-2xl">Dataformer</span>
         </Link>
         <MenuBar removeFunction={checkForChanges} />
       </div>
@@ -105,17 +105,7 @@ export default function Header(): JSX.Element {
       <div className="header-end-division lg:w-[30%]">
         <div className="header-end-display">
           <a
-            href="https://github.com/langflow-ai/langflow"
-            target="_blank"
-            rel="noreferrer"
-            className="header-github-link gap-2"
-          >
-            <FaGithub className="h-5 w-5" />
-            <div className="hidden lg:block">Star</div>
-            <div className="header-github-display">{stars ?? 0}</div>
-          </a>
-          <a
-            href="https://twitter.com/langflow_ai"
+            href="https://twitter.com/dataformer_ai"
             target="_blank"
             rel="noreferrer"
             className="text-muted-foreground"
@@ -123,7 +113,7 @@ export default function Header(): JSX.Element {
             <RiTwitterXFill className="side-bar-button-size" />
           </a>
           <a
-            href="https://discord.gg/EqksyE2EX9"
+            href="https://dataformer.ai/discord"
             target="_blank"
             rel="noreferrer"
             className="text-muted-foreground"
@@ -168,50 +158,57 @@ export default function Header(): JSX.Element {
               />
             </button>
           )}
-          {!autoLogin && (
-            <>
-              <Separator orientation="vertical" />
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button
-                    className={
-                      "h-7 w-7 rounded-full focus-visible:outline-0 " +
-                      (userData?.profile_image ??
-                        gradients[
-                          parseInt(userData?.id ?? "", 30) % gradients.length
-                        ])
-                    }
-                  />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  {isAdmin && (
+
+          <>
+            <Separator orientation="vertical" />
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  data-testid="user-profile-settings"
+                  className={
+                    "h-7 w-7 rounded-full focus-visible:outline-0 " +
+                    (userData?.profile_image ??
+                      (userData?.id
+                        ? gradients[
+                            parseInt(userData?.id ?? "", 30) % gradients.length
+                          ]
+                        : "bg-gray-500"))
+                  }
+                />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>General</DropdownMenuLabel>
+                <DropdownMenuItem
+                  className="cursor-pointer"
+                  onClick={() => navigate("/settings")}
+                >
+                  Settings
+                </DropdownMenuItem>
+                {!autoLogin && (
+                  <>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                    {isAdmin && (
+                      <DropdownMenuItem
+                        className="cursor-pointer"
+                        onClick={() => navigate("/admin")}
+                      >
+                        Admin Page
+                      </DropdownMenuItem>
+                    )}
                     <DropdownMenuItem
                       className="cursor-pointer"
-                      onClick={() => navigate("/admin")}
+                      onClick={() => {
+                        logout();
+                      }}
                     >
-                      Admin Page
+                      Sign Out
                     </DropdownMenuItem>
-                  )}
-                  <DropdownMenuItem
-                    className="cursor-pointer"
-                    onClick={() => navigate("/account/settings")}
-                  >
-                    Profile Settings
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    className="cursor-pointer"
-                    onClick={() => {
-                      logout();
-                    }}
-                  >
-                    Sign Out
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </>
-          )}
+                  </>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </>
         </div>
       </div>
     </div>

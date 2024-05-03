@@ -74,7 +74,7 @@ COPY Makefile ./
 COPY README.md ./
 RUN cd src/frontend && npm run build
 COPY src/backend ./src/backend
-RUN cp -r src/frontend/build src/backend/base/langflow/frontend
+RUN cp -r src/frontend/build src/backend/base/dfapp/frontend
 RUN rm -rf src/backend/base/dist
 RUN cd src/backend/base && $POETRY_HOME/bin/poetry build --format sdist
 
@@ -88,5 +88,5 @@ COPY --from=builder-base /app/src/backend/base/dist/*.tar.gz ./
 RUN pip install *.tar.gz --user
 
 WORKDIR /app
-ENTRYPOINT ["python", "-m", "langflow", "run"]
+ENTRYPOINT ["python", "-m", "dfapp", "run"]
 CMD ["--host", "0.0.0.0", "--port", "7860"]

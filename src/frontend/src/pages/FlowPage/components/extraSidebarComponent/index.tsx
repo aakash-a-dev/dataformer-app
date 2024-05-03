@@ -1,8 +1,8 @@
 import { cloneDeep } from "lodash";
 import { LinkIcon, SparklesIcon } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import ShadTooltip from "../../../../components/ShadTooltipComponent";
 import IconComponent from "../../../../components/genericIconComponent";
+import ShadTooltip from "../../../../components/shadTooltipComponent";
 import { Input } from "../../../../components/ui/input";
 import { Separator } from "../../../../components/ui/separator";
 import { PRIORITY_SIDEBAR_ORDER } from "../../../../constants/constants";
@@ -447,7 +447,7 @@ export default function ExtraSidebar(): JSX.Element {
                     <>
                       <a
                         target={"_blank"}
-                        href="https://langflow.store"
+                        href="https://dfapp.store"
                         className="components-disclosure-arrangement"
                       >
                         <div className="flex gap-4">

@@ -1,28 +1,22 @@
 [tool.poetry]
-name = "langflow-base"
-version = "0.0.40"
+name = "dfapp-base"
+version = "0.0.1"
 description = "A Python package with a built-in web application"
-authors = ["Langflow <contact@langflow.org>"]
+authors = ["Dataformer <contact@dataformer.ai>"]
 maintainers = [
-    "Carlos Coelho <carlos@langflow.org>",
-    "Cristhian Zanforlin <cristhian.lousa@gmail.com>",
-    "Gabriel Almeida <gabriel@langflow.org>",
-    "Igor Carvalho <igorr.ackerman@gmail.com>",
-    "Lucas Eduoli <lucaseduoli@gmail.com>",
-    "Otávio Anovazzi <otavio2204@gmail.com>",
-    "Rodrigo Nader <rodrigo@langflow.org>",
+    "Satpal Singh Rathore <satpal@dataformer.ai>",
 ]
-repository = "https://github.com/langflow-ai/langflow"
+repository = "https://github.com/DataformerAI/dataformer-app"
 license = "MIT"
 readme = "README.md"
-keywords = ["nlp", "langchain", "openai", "gpt", "gui"]
-packages = [{ include = "langflow" }, { include = "langflow/py.typed" }]
-include = ["pyproject.toml", "README.md", "langflow/**/*"]
-documentation = "https://docs.langflow.org"
+keywords = ["nlp", "dataformer", "openai", "gpt", "gui"]
+packages = [{ include = "dfapp" }, { include = "dfapp/py.typed" }]
+include = ["pyproject.toml", "README.md", "dfapp/**/*"]
+documentation = "https://docs.dataformer.ai"
 
 
 [tool.poetry.scripts]
-langflow-base = "langflow.__main__:main"
+dfapp-base = "dfapp.__main__:main"
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.12"
@@ -80,12 +74,12 @@ markers = ["async_test"]
 
 [tool.mypy]
 namespace_packages = true
-mypy_path = "langflow"
+mypy_path = "dfapp"
 ignore_missing_imports = true
 
 
 [tool.ruff]
-exclude = ["src/backend/langflow/alembic/*"]
+exclude = ["src/backend/dfapp/alembic/*"]
 line-length = 120
 
 [build-system]
