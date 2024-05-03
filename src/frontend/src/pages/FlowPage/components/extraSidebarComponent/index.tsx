@@ -447,7 +447,7 @@ export default function ExtraSidebar(): JSX.Element {
                     <>
                       <a
                         target={"_blank"}
-                        href="https://dfapp.store"
+                        href="https://dataformer.store"
                         className="components-disclosure-arrangement"
                       >
                         <div className="flex gap-4">

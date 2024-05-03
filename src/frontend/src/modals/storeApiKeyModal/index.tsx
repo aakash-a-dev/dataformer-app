@@ -111,7 +111,7 @@ export default function StoreApiKeyModal({
               {CREATE_API_KEY}{" "}
               <a
                 className="text-high-indigo underline"
-                href="https://dfapp.store/"
+                href="https://dataformer.store/"
                 target="_blank"
               >
                 dfapp.store
