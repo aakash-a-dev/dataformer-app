@@ -14,8 +14,7 @@ from dfapp.graph.graph.state_manager import GraphStateManager
 from dfapp.graph.graph.utils import process_flow
 from dfapp.graph.schema import InterfaceComponentTypes, RunOutputs
 from dfapp.graph.vertex.base import Vertex
-from dfapp.graph.vertex.types import ChatVertex, FileToolVertex, LLMVertex, StateVertex, ToolkitVertex
-from dfapp.interface.tools.constants import FILE_TOOLS
+from dfapp.graph.vertex.types import ChatVertex, LLMVertex, StateVertex
 from dfapp.schema import Record
 from dfapp.schema.schema import INPUT_FIELD_NAME, InputType
 from dfapp.services.deps import get_chat_service
@@ -970,8 +969,6 @@ class Graph:
         elif node_name in lazy_load_vertex_dict.VERTEX_TYPE_MAP:
             return lazy_load_vertex_dict.VERTEX_TYPE_MAP[node_name]
 
-        if node_type in FILE_TOOLS:
-            return FileToolVertex
         if node_type in lazy_load_vertex_dict.VERTEX_TYPE_MAP:
             return lazy_load_vertex_dict.VERTEX_TYPE_MAP[node_type]
         return (

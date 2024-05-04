@@ -16,55 +16,6 @@ from dfapp.services.monitor.utils import log_vertex_build
 from dfapp.utils.schemas import ChatOutputResponse
 from dfapp.utils.util import unescape_string
 
-
-class AgentVertex(Vertex):
-    def __init__(self, data: Dict, graph, params: Optional[Dict] = None):
-        super().__init__(data, graph=graph, base_type="agents", params=params)
-
-        self.tools: List[Union[ToolkitVertex, ToolVertex]] = []
-        self.chains: List[ChainVertex] = []
-        self.steps: List[Callable] = [self._custom_build]
-
-    def __getstate__(self):
-        state = super().__getstate__()
-        state["tools"] = self.tools
-        state["chains"] = self.chains
-        return state
-
-    def __setstate__(self, state):
-        self.tools = state["tools"]
-        self.chains = state["chains"]
-        super().__setstate__(state)
-
-    def _set_tools_and_chains(self) -> None:
-        for edge in self.edges:
-            if not hasattr(edge, "source"):
-                continue
-            source_node = edge.source
-            if isinstance(source_node, (ToolVertex, ToolkitVertex)):
-                self.tools.append(source_node)
-            elif isinstance(source_node, ChainVertex):
-                self.chains.append(source_node)
-
-    async def _custom_build(self, *args, **kwargs):
-        user_id = kwargs.get("user_id", None)
-        self._set_tools_and_chains()
-        # First, build the tools
-        for tool_node in self.tools:
-            await tool_node.build(user_id=user_id)
-
-        # Next, build the chains and the rest
-        for chain_node in self.chains:
-            await chain_node.build(tools=self.tools, user_id=user_id)
-
-        await self._build(user_id=user_id)
-
-
-class ToolVertex(Vertex):
-    def __init__(self, data: Dict, graph, params: Optional[Dict] = None):
-        super().__init__(data, graph=graph, base_type="tools", params=params)
-
-
 class LLMVertex(Vertex):
     built_node_type = None
     class_built_object = None
@@ -88,20 +39,6 @@ class LLMVertex(Vertex):
             self.class_built_object = self._built_object
 
 
-class ToolkitVertex(Vertex):
-    def __init__(self, data: Dict, graph, params=None):
-        super().__init__(data, graph=graph, base_type="toolkits", params=params)
-
-
-class FileToolVertex(ToolVertex):
-    def __init__(self, data: Dict, graph, params=None):
-        super().__init__(
-            data,
-            params=params,
-            graph=graph,
-        )
-
-
 class WrapperVertex(Vertex):
     def __init__(self, data: Dict, graph, params=None):
         super().__init__(data, graph=graph, base_type="wrappers")
@@ -114,128 +51,6 @@ class WrapperVertex(Vertex):
             if "headers" in self.params:
                 self.params["headers"] = ast.literal_eval(self.params["headers"])
             await self._build(user_id=user_id)
-
-
-class DocumentLoaderVertex(Vertex):
-    def __init__(self, data: Dict, graph, params: Optional[Dict] = None):
-        super().__init__(data, graph=graph, base_type="documentloaders", params=params)
-
-    def _built_object_repr(self):
-        # This built_object is a list of documents. Maybe we should
-        # show how many documents are in the list?
-
-        if not isinstance(self._built_object, UnbuiltObject):
-            avg_length = sum(len(record.get_text()) for record in self._built_object if hasattr(record, "text")) / len(
-                self._built_object
-            )
-            return f"""{self.display_name}({len(self._built_object)} records)
-            \nAvg. Record Length (characters): {int(avg_length)}
-            Records: {self._built_object[:3]}..."""
-        return f"{self.vertex_type}()"
-
-
-class EmbeddingVertex(Vertex):
-    def __init__(self, data: Dict, graph, params: Optional[Dict] = None):
-        super().__init__(data, graph=graph, base_type="embeddings", params=params)
-
-
-class VectorStoreVertex(Vertex):
-    def __init__(self, data: Dict, graph, params=None):
-        super().__init__(data, graph=graph, base_type="vectorstores")
-
-        self.params = params or {}
-
-    # VectorStores may contain databse connections
-    # so we need to define the __reduce__ method and the __setstate__ method
-    # to avoid pickling errors
-    def clean_edges_for_pickling(self):
-        # for each edge that has self as source
-        # we need to clear the _built_object of the target
-        # so that we don't try to pickle a database connection
-        for edge in self.edges:
-            if edge.source == self:
-                edge.target._built_object = None
-                edge.target._built = False
-                edge.target.params[edge.target_param] = self
-
-    def remove_docs_and_texts_from_params(self):
-        # remove documents and texts from params
-        # so that we don't try to pickle a database connection
-        self.params.pop("documents", None)
-        self.params.pop("texts", None)
-
-    def __getstate__(self):
-        # We want to save the params attribute
-        # and if "documents" or "texts" are in the params
-        # we want to remove them because they have already
-        # been processed.
-        params = self.params.copy()
-        params.pop("documents", None)
-        params.pop("texts", None)
-        self.clean_edges_for_pickling()
-
-        return super().__getstate__()
-
-    def __setstate__(self, state):
-        super().__setstate__(state)
-        self.remove_docs_and_texts_from_params()
-
-
-class MemoryVertex(Vertex):
-    def __init__(self, data: Dict, graph):
-        super().__init__(data, graph=graph, base_type="memory")
-
-
-class RetrieverVertex(Vertex):
-    def __init__(self, data: Dict, graph):
-        super().__init__(data, graph=graph, base_type="retrievers")
-
-
-class TextSplitterVertex(Vertex):
-    def __init__(self, data: Dict, graph, params: Optional[Dict] = None):
-        super().__init__(data, graph=graph, base_type="textsplitters", params=params)
-
-    def _built_object_repr(self):
-        # This built_object is a list of documents. Maybe we should
-        # show how many documents are in the list?
-
-        if not isinstance(self._built_object, UnbuiltObject):
-            avg_length = sum(len(doc.page_content) for doc in self._built_object) / len(self._built_object)
-            return f"""{self.vertex_type}({len(self._built_object)} documents)
-            \nAvg. Document Length (characters): {int(avg_length)}
-            \nDocuments: {self._built_object[:3]}..."""
-        return f"{self.vertex_type}()"
-
-
-class ChainVertex(Vertex):
-    def __init__(self, data: Dict, graph):
-        super().__init__(data, graph=graph, base_type="chains")
-        self.steps = [self._custom_build]
-
-    async def _custom_build(self, *args, **kwargs):
-        force = kwargs.get("force", False)
-        user_id = kwargs.get("user_id", None)
-        # Remove this once LLMChain is CustomComponent
-        self.params.pop("code", None)
-        for key, value in self.params.items():
-            if isinstance(value, PromptVertex):
-                # Build the PromptVertex, passing the tools if available
-                tools = kwargs.get("tools", None)
-                self.params[key] = value.build(tools=tools, frozen=force)
-
-        await self._build(user_id=user_id)
-
-    def set_artifacts(self) -> None:
-        if isinstance(self._built_object, UnbuiltObject):
-            return
-        if self._built_object and hasattr(self._built_object, "input_keys"):
-            self.artifacts = dict(input_keys=self._built_object.input_keys)
-
-    def _built_object_repr(self):
-        if isinstance(self._built_object, str):
-            return self._built_object
-        return super()._built_object_repr()
-
 
 class PromptVertex(Vertex):
     def __init__(self, data: Dict, graph):

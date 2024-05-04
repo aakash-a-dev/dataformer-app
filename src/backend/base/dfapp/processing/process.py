@@ -1,8 +1,6 @@
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple, Union
 
 
-from langchain.agents import AgentExecutor
-from langchain.schema import AgentAction
 from loguru import logger
 from pydantic import BaseModel
 
@@ -47,47 +45,7 @@ def fix_memory_inputs(langchain_object):
         update_memory_keys(langchain_object, possible_new_mem_key)
 
 
-def format_actions(actions: List[Tuple[AgentAction, str]]) -> str:
-    """Format a list of (AgentAction, answer) tuples into a string."""
-    output = []
-    for action, answer in actions:
-        log = action.log
-        tool = action.tool
-        tool_input = action.tool_input
-        output.append(f"Log: {log}")
-        if "Action" not in log and "Action Input" not in log:
-            output.append(f"Tool: {tool}")
-            output.append(f"Tool Input: {tool_input}")
-        output.append(f"Answer: {answer}")
-        output.append("")  # Add a blank line
-    return "\n".join(output)
 
-
-def get_result_and_thought(langchain_object: Any, inputs: dict):
-    """Get result and thought from extracted json"""
-    try:
-        if hasattr(langchain_object, "verbose"):
-            langchain_object.verbose = True
-
-        if hasattr(langchain_object, "return_intermediate_steps"):
-            langchain_object.return_intermediate_steps = False
-
-        try:
-            if not isinstance(langchain_object, AgentExecutor):
-                fix_memory_inputs(langchain_object)
-        except Exception as exc:
-            logger.error(f"Error fixing memory inputs: {exc}")
-
-        try:
-            output = langchain_object(inputs, return_only_outputs=True)
-        except ValueError as exc:
-            # make the error message more informative
-            logger.debug(f"Error: {str(exc)}")
-            output = langchain_object.run(inputs)
-
-    except Exception as exc:
-        raise ValueError(f"Error: {str(exc)}") from exc
-    return output
 
 
 def get_input_str_if_only_one_input(inputs: dict) -> Optional[str]:
