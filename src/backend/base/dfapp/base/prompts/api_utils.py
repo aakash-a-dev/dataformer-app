@@ -1,5 +1,5 @@
 from fastapi import HTTPException
-from langchain.prompts import PromptTemplate
+# from langchain.prompts import PromptTemplate
 from loguru import logger
 
 from dfapp.api.v1.base import INVALID_NAMES, check_input_variables
@@ -15,12 +15,12 @@ def validate_prompt(prompt_template: str, silent_errors: bool = False) -> list[s
     if any(var in INVALID_NAMES for var in input_variables):
         raise ValueError(f"Invalid input variables. None of the variables can be named {', '.join(input_variables)}. ")
 
-    try:
-        PromptTemplate(template=prompt_template, input_variables=input_variables)
-    except Exception as exc:
-        logger.error(f"Invalid prompt: {exc}")
-        if not silent_errors:
-            raise ValueError(f"Invalid prompt: {exc}") from exc
+    # try:
+    #     PromptTemplate(template=prompt_template, input_variables=input_variables)
+    # except Exception as exc:
+    #     logger.error(f"Invalid prompt: {exc}")
+    #     if not silent_errors:
+    #         raise ValueError(f"Invalid prompt: {exc}") from exc
 
     return input_variables
 

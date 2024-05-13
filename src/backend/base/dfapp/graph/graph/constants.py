@@ -3,7 +3,7 @@ from dfapp.interface.custom.base import custom_component_creator
 from dfapp.interface.llms.base import llm_creator
 from dfapp.interface.output_parsers.base import output_parser_creator
 from dfapp.interface.prompts.base import prompt_creator
-from dfapp.interface.wrappers.base import wrapper_creator
+# from dfapp.interface.wrappers.base import wrapper_creator
 from dfapp.utils.lazy_load import LazyLoadDictBase
 
 CHAT_COMPONENTS = ["ChatInput", "ChatOutput", "TextInput", "SessionID"]
@@ -28,7 +28,7 @@ class VertexTypesDict(LazyLoadDictBase):
         return {
             **{t: types.PromptVertex for t in prompt_creator.to_list()},
             # **{t: types.ChainVertex for t in chain_creator.to_list()},
-            **{t: types.WrapperVertex for t in wrapper_creator.to_list()},
+            # **{t: types.WrapperVertex for t in wrapper_creator.to_list()},
             **{t: types.LLMVertex for t in llm_creator.to_list()},
             # **{t: types.VectorStoreVertex for t in vectorstore_creator.to_list()},
             **{t: types.OutputParserVertex for t in output_parser_creator.to_list()},

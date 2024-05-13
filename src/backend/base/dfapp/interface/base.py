@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import Any, Dict, List, Optional, Type, Union
 
-from langchain.agents import AgentExecutor
-from langchain.chains.base import Chain
+# from langchain.agents import AgentExecutor
+# from langchain.chains.base import Chain
 from loguru import logger
 from pydantic import BaseModel
 
@@ -103,37 +103,37 @@ class LangChainTypeCreator(BaseModel, ABC):
         return signature
 
 
-class CustomChain(Chain, ABC):
-    """Custom chain"""
+# class CustomChain(Chain, ABC):
+#     """Custom chain"""
 
-    @staticmethod
-    def function_name():
-        return "CustomChain"
+#     @staticmethod
+#     def function_name():
+#         return "CustomChain"
 
-    @classmethod
-    def initialize(cls, *args, **kwargs):
-        pass
+#     @classmethod
+#     def initialize(cls, *args, **kwargs):
+#         pass
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
 
-    def run(self, *args, **kwargs):
-        return super().run(*args, **kwargs)
+#     def run(self, *args, **kwargs):
+#         return super().run(*args, **kwargs)
 
 
-class CustomAgentExecutor(AgentExecutor, ABC):
-    """Custom chain"""
+# class CustomAgentExecutor(AgentExecutor, ABC):
+#     """Custom chain"""
 
-    @staticmethod
-    def function_name():
-        return "CustomChain"
+#     @staticmethod
+#     def function_name():
+#         return "CustomChain"
 
-    @classmethod
-    def initialize(cls, *args, **kwargs):
-        pass
+#     @classmethod
+#     def initialize(cls, *args, **kwargs):
+#         pass
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
 
-    def run(self, *args, **kwargs):
-        return super().run(*args, **kwargs)
+#     def run(self, *args, **kwargs):
+#         return super().run(*args, **kwargs)

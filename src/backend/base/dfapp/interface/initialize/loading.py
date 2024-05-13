@@ -12,9 +12,9 @@ from dfapp.interface.importing.utils import import_by_type
 from dfapp.interface.initialize.llm import initialize_vertexai
 from dfapp.interface.initialize.utils import handle_format_kwargs, handle_node_type, handle_partial_variables
 from dfapp.interface.initialize.vector_store import vecstore_initializer
-from dfapp.interface.output_parsers.base import output_parser_creator
+# from dfapp.interface.output_parsers.base import output_parser_creator
 from dfapp.interface.utils import load_file_into_dict
-from dfapp.interface.wrappers.base import wrapper_creator
+# from dfapp.interface.wrappers.base import wrapper_creator
 from dfapp.schema.schema import Record
 from dfapp.utils import validate
 from dfapp.utils.util import unescape_string
@@ -182,13 +182,13 @@ async def instantiate_custom_component(params, user_id, vertex):
     return custom_component, build_result, {"repr": custom_repr}
 
 
-def instantiate_wrapper(node_type, class_object, params):
-    if node_type in wrapper_creator.from_method_nodes:
-        method = wrapper_creator.from_method_nodes[node_type]
-        if class_method := getattr(class_object, method, None):
-            return class_method(**params)
-        raise ValueError(f"Method {method} not found in {class_object}")
-    return class_object(**params)
+# def instantiate_wrapper(node_type, class_object, params):
+#     if node_type in wrapper_creator.from_method_nodes:
+#         method = wrapper_creator.from_method_nodes[node_type]
+#         if class_method := getattr(class_object, method, None):
+#             return class_method(**params)
+#         raise ValueError(f"Method {method} not found in {class_object}")
+#     return class_object(**params)
 
 
 def instantiate_output_parser(node_type, class_object, params):

@@ -7,7 +7,7 @@ from dfapp.interface.llms.base import llm_creator
 
 from dfapp.interface.output_parsers.base import output_parser_creator
 
-from dfapp.interface.wrappers.base import wrapper_creator
+# from dfapp.interface.wrappers.base import wrapper_creator
 
 
 # Used to get the base_classes list
@@ -31,7 +31,7 @@ def build_langchain_types_dict():  # sourcery skip: dict-assign-update-to-union
     creators = [
         # prompt_creator,
         llm_creator,
-        wrapper_creator,
+        # wrapper_creator,
         # vectorstore_creator,
         # utility_creator,
         output_parser_creator,

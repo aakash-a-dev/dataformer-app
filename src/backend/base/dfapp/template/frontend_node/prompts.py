@@ -1,6 +1,6 @@
 from typing import Optional
 
-from langchain.agents.mrkl import prompt
+# from langchain.agents.mrkl import prompt
 
 from dfapp.template.field.base import TemplateField
 from dfapp.template.frontend_node.base import FrontendNode
@@ -62,46 +62,46 @@ class BasePromptFrontendNode(FrontendNode):
     base_classes: list[str]
 
 
-class ZeroShotPromptNode(BasePromptFrontendNode):
-    name: str = "ZeroShotPrompt"
-    template: Template = Template(
-        type_name="ZeroShotPrompt",
-        fields=[
-            TemplateField(
-                field_type="str",
-                required=False,
-                placeholder="",
-                is_list=False,
-                show=True,
-                multiline=True,
-                value=prompt.PREFIX,
-                name="prefix",
-            ),
-            TemplateField(
-                field_type="str",
-                required=True,
-                placeholder="",
-                is_list=False,
-                show=True,
-                multiline=True,
-                value=prompt.FORMAT_INSTRUCTIONS,
-                name="format_instructions",
-            ),
-            TemplateField(
-                field_type="str",
-                required=True,
-                placeholder="",
-                is_list=False,
-                show=True,
-                multiline=True,
-                value=prompt.SUFFIX,
-                name="suffix",
-            ),
-        ],
-    )
-    description: str = "Prompt template for Zero Shot Agent."
-    base_classes: list[str] = ["BasePromptTemplate"]
+# class ZeroShotPromptNode(BasePromptFrontendNode):
+#     name: str = "ZeroShotPrompt"
+#     template: Template = Template(
+#         type_name="ZeroShotPrompt",
+#         fields=[
+#             TemplateField(
+#                 field_type="str",
+#                 required=False,
+#                 placeholder="",
+#                 is_list=False,
+#                 show=True,
+#                 multiline=True,
+#                 value=prompt.PREFIX,
+#                 name="prefix",
+#             ),
+#             TemplateField(
+#                 field_type="str",
+#                 required=True,
+#                 placeholder="",
+#                 is_list=False,
+#                 show=True,
+#                 multiline=True,
+#                 value=prompt.FORMAT_INSTRUCTIONS,
+#                 name="format_instructions",
+#             ),
+#             TemplateField(
+#                 field_type="str",
+#                 required=True,
+#                 placeholder="",
+#                 is_list=False,
+#                 show=True,
+#                 multiline=True,
+#                 value=prompt.SUFFIX,
+#                 name="suffix",
+#             ),
+#         ],
+#     )
+#     description: str = "Prompt template for Zero Shot Agent."
+#     base_classes: list[str] = ["BasePromptTemplate"]
 
-    @staticmethod
-    def format_field(field: TemplateField, name: Optional[str] = None) -> None:
-        PromptFrontendNode.format_field(field, name)
+#     @staticmethod
+#     def format_field(field: TemplateField, name: Optional[str] = None) -> None:
+#         PromptFrontendNode.format_field(field, name)

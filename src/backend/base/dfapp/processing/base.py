@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING, List, Union
 
-from langchain.callbacks.base import BaseCallbackHandler
+# from langchain.callbacks.base import BaseCallbackHandler
 from loguru import logger
 
 from dfapp.processing.process import fix_memory_inputs, format_actions
@@ -35,14 +35,14 @@ def get_langfuse_callback(trace_id):
     return None
 
 
-def flush_langfuse_callback_if_present(callbacks: List[Union[BaseCallbackHandler, "CallbackHandler"]]):
-    """
-    If langfuse callback is present, run callback.langfuse.flush()
-    """
-    for callback in callbacks:
-        if hasattr(callback, "langfuse") and hasattr(callback.langfuse, "flush"):
-            callback.langfuse.flush()
-            break
+# def flush_langfuse_callback_if_present(callbacks: List[Union[BaseCallbackHandler, "CallbackHandler"]]):
+#     """
+#     If langfuse callback is present, run callback.langfuse.flush()
+#     """
+#     for callback in callbacks:
+#         if hasattr(callback, "langfuse") and hasattr(callback.langfuse, "flush"):
+#             callback.langfuse.flush()
+#             break
 
 
 async def get_result_and_steps(langchain_object, inputs: Union[dict, str], **kwargs):
@@ -74,7 +74,7 @@ async def get_result_and_steps(langchain_object, inputs: Union[dict, str], **kwa
             output = langchain_object(inputs, callbacks=callbacks)
 
         # if langfuse callback is present, run callback.langfuse.flush()
-        flush_langfuse_callback_if_present(callbacks)
+        # flush_langfuse_callback_if_present(callbacks)
 
         intermediate_steps = output.get("intermediate_steps", []) if isinstance(output, dict) else []
 

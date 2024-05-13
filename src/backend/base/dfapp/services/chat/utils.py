@@ -1,15 +1,15 @@
 from typing import Any
 
-from langchain.agents import AgentExecutor
-from langchain.chains.base import Chain
-from langchain_core.runnables import Runnable
+# from langchain.agents import AgentExecutor
+# from langchain.chains.base import Chain
+# from langchain_core.runnables import Runnable
 from loguru import logger
 
 from dfapp.api.v1.schemas import ChatMessage
 from dfapp.interface.utils import try_setting_streaming_options
 from dfapp.processing.base import get_result_and_steps
 
-LANGCHAIN_RUNNABLES = (Chain, Runnable, AgentExecutor)
+# LANGCHAIN_RUNNABLES = (Chain, Runnable, AgentExecutor)
 
 
 async def process_graph(
@@ -32,15 +32,15 @@ async def process_graph(
             chat_inputs.message = {}
 
         logger.debug("Generating result and thought")
-        if isinstance(build_result, LANGCHAIN_RUNNABLES):
-            result, intermediate_steps, raw_output = await get_result_and_steps(
-                build_result,
-                chat_inputs.message,
-                client_id=client_id,
-                session_id=session_id,
-            )
-        else:
-            raise TypeError(f"Unknown type {type(build_result)}")
+        # if isinstance(build_result, LANGCHAIN_RUNNABLES):
+        #     result, intermediate_steps, raw_output = await get_result_and_steps(
+        #         build_result,
+        #         chat_inputs.message,
+        #         client_id=client_id,
+        #         session_id=session_id,
+        #     )
+        # else:
+        raise TypeError(f"Unknown type {type(build_result)}")
         logger.debug("Generated result and intermediate_steps")
         return result, intermediate_steps, raw_output
     except Exception as e:

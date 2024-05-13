@@ -1,7 +1,5 @@
 from dfapp.interface.custom.custom_component import CustomComponent
 from typing import Optional, Union
-import pandas as pd
-from groq import Groq
 from dfapp.base.models.model import ModelAdapter
 
 class Generator(CustomComponent):
