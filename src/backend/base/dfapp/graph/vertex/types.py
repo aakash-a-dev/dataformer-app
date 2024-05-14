@@ -3,7 +3,7 @@ import json
 from typing import AsyncIterator, Callable, Dict, Iterator, List, Optional, Union
 
 import yaml
-from langchain_core.messages import AIMessage
+# from langchain_core.messages import AIMessage
 from loguru import logger
 
 from dfapp.graph.schema import InterfaceComponentTypes
@@ -129,129 +129,129 @@ class CustomComponentVertex(Vertex):
             return self.artifacts["repr"] or super()._built_object_repr()
 
 
-class ChatVertex(Vertex):
-    def __init__(self, data: Dict, graph):
-        super().__init__(data, graph=graph, base_type="custom_components", is_task=True)
-        self.steps = [self._build, self._run]
+# class ChatVertex(Vertex):
+#     def __init__(self, data: Dict, graph):
+#         super().__init__(data, graph=graph, base_type="custom_components", is_task=True)
+#         self.steps = [self._build, self._run]
 
-    def build_stream_url(self):
-        return f"/api/v1/build/{self.graph.flow_id}/{self.id}/stream"
+#     def build_stream_url(self):
+#         return f"/api/v1/build/{self.graph.flow_id}/{self.id}/stream"
 
-    def _built_object_repr(self):
-        if self.task_id and self.is_task:
-            if task := self.get_task():
-                return str(task.info)
-            else:
-                return f"Task {self.task_id} is not running"
-        if self.artifacts:
-            # dump as a yaml string
-            artifacts = {k.title().replace("_", " "): v for k, v in self.artifacts.items() if v is not None}
-            yaml_str = yaml.dump(artifacts, default_flow_style=False, allow_unicode=True)
-            return yaml_str
-        return super()._built_object_repr()
+#     def _built_object_repr(self):
+#         if self.task_id and self.is_task:
+#             if task := self.get_task():
+#                 return str(task.info)
+#             else:
+#                 return f"Task {self.task_id} is not running"
+#         if self.artifacts:
+#             # dump as a yaml string
+#             artifacts = {k.title().replace("_", " "): v for k, v in self.artifacts.items() if v is not None}
+#             yaml_str = yaml.dump(artifacts, default_flow_style=False, allow_unicode=True)
+#             return yaml_str
+#         return super()._built_object_repr()
 
-    async def _run(self, *args, **kwargs):
-        if self.is_interface_component:
-            if self.vertex_type in ["ChatOutput", "ChatInput"]:
-                artifacts = None
-                sender = self.params.get("sender", None)
-                sender_name = self.params.get("sender_name", None)
-                message = self.params.get(INPUT_FIELD_NAME, None)
-                if isinstance(message, str):
-                    message = unescape_string(message)
-                stream_url = None
-                if isinstance(self._built_object, AIMessage):
-                    artifacts = ChatOutputResponse.from_message(
-                        self._built_object,
-                        sender=sender,
-                        sender_name=sender_name,
-                    )
-                elif not isinstance(self._built_object, UnbuiltObject):
-                    if isinstance(self._built_object, dict):
-                        # Turn the dict into a pleasing to
-                        # read JSON inside a code block
-                        message = dict_to_codeblock(self._built_object)
-                    elif isinstance(self._built_object, Record):
-                        message = self._built_object.text
-                    elif isinstance(message, (AsyncIterator, Iterator)):
-                        stream_url = self.build_stream_url()
-                        message = ""
-                    elif not isinstance(self._built_object, str):
-                        message = str(self._built_object)
-                    # if the message is a generator or iterator
-                    # it means that it is a stream of messages
-                    else:
-                        message = self._built_object
+#     async def _run(self, *args, **kwargs):
+#         if self.is_interface_component:
+#             if self.vertex_type in ["ChatOutput", "ChatInput"]:
+#                 artifacts = None
+#                 sender = self.params.get("sender", None)
+#                 sender_name = self.params.get("sender_name", None)
+#                 message = self.params.get(INPUT_FIELD_NAME, None)
+#                 if isinstance(message, str):
+#                     message = unescape_string(message)
+#                 stream_url = None
+#                 if isinstance(self._built_object, AIMessage):
+#                     artifacts = ChatOutputResponse.from_message(
+#                         self._built_object,
+#                         sender=sender,
+#                         sender_name=sender_name,
+#                     )
+#                 if not isinstance(self._built_object, UnbuiltObject):
+#                     if isinstance(self._built_object, dict):
+#                         # Turn the dict into a pleasing to
+#                         # read JSON inside a code block
+#                         message = dict_to_codeblock(self._built_object)
+#                     elif isinstance(self._built_object, Record):
+#                         message = self._built_object.text
+#                     elif isinstance(message, (AsyncIterator, Iterator)):
+#                         stream_url = self.build_stream_url()
+#                         message = ""
+#                     elif not isinstance(self._built_object, str):
+#                         message = str(self._built_object)
+#                     # if the message is a generator or iterator
+#                     # it means that it is a stream of messages
+#                     else:
+#                         message = self._built_object
 
-                    artifacts = ChatOutputResponse(
-                        message=message,
-                        sender=sender,
-                        sender_name=sender_name,
-                        stream_url=stream_url,
-                    )
+#                     artifacts = ChatOutputResponse(
+#                         message=message,
+#                         sender=sender,
+#                         sender_name=sender_name,
+#                         stream_url=stream_url,
+#                     )
 
-                    self.will_stream = stream_url is not None
-                if artifacts:
-                    self.artifacts = artifacts.model_dump(exclude_none=True)
-            if isinstance(self._built_object, (AsyncIterator, Iterator)):
-                if self.params["return_record"]:
-                    self._built_object = Record(text=message, data=self.artifacts)
-                else:
-                    self._built_object = message
-            self._built_result = self._built_object
+#                     self.will_stream = stream_url is not None
+#                 if artifacts:
+#                     self.artifacts = artifacts.model_dump(exclude_none=True)
+#             if isinstance(self._built_object, (AsyncIterator, Iterator)):
+#                 if self.params["return_record"]:
+#                     self._built_object = Record(text=message, data=self.artifacts)
+#                 else:
+#                     self._built_object = message
+#             self._built_result = self._built_object
 
-        else:
-            await super()._run(*args, **kwargs)
+#         else:
+#             await super()._run(*args, **kwargs)
 
-    async def stream(self):
-        iterator = self.params.get(INPUT_FIELD_NAME, None)
-        if not isinstance(iterator, (AsyncIterator, Iterator)):
-            raise ValueError("The message must be an iterator or an async iterator.")
-        is_async = isinstance(iterator, AsyncIterator)
-        complete_message = ""
-        if is_async:
-            async for message in iterator:
-                message = message.content if hasattr(message, "content") else message
-                message = message.text if hasattr(message, "text") else message
-                yield message
-                complete_message += message
-        else:
-            for message in iterator:
-                message = message.content if hasattr(message, "content") else message
-                message = message.text if hasattr(message, "text") else message
-                yield message
-                complete_message += message
-        self.artifacts = ChatOutputResponse(
-            message=complete_message,
-            sender=self.params.get("sender", ""),
-            sender_name=self.params.get("sender_name", ""),
-        ).model_dump()
-        self.params[INPUT_FIELD_NAME] = complete_message
-        self._built_object = Record(text=complete_message, data=self.artifacts)
-        self._built_result = complete_message
-        # Update artifacts with the message
-        # and remove the stream_url
-        self._finalize_build()
-        logger.debug(f"Streamed message: {complete_message}")
+#     async def stream(self):
+#         iterator = self.params.get(INPUT_FIELD_NAME, None)
+#         if not isinstance(iterator, (AsyncIterator, Iterator)):
+#             raise ValueError("The message must be an iterator or an async iterator.")
+#         is_async = isinstance(iterator, AsyncIterator)
+#         complete_message = ""
+#         if is_async:
+#             async for message in iterator:
+#                 message = message.content if hasattr(message, "content") else message
+#                 message = message.text if hasattr(message, "text") else message
+#                 yield message
+#                 complete_message += message
+#         else:
+#             for message in iterator:
+#                 message = message.content if hasattr(message, "content") else message
+#                 message = message.text if hasattr(message, "text") else message
+#                 yield message
+#                 complete_message += message
+#         self.artifacts = ChatOutputResponse(
+#             message=complete_message,
+#             sender=self.params.get("sender", ""),
+#             sender_name=self.params.get("sender_name", ""),
+#         ).model_dump()
+#         self.params[INPUT_FIELD_NAME] = complete_message
+#         self._built_object = Record(text=complete_message, data=self.artifacts)
+#         self._built_result = complete_message
+#         # Update artifacts with the message
+#         # and remove the stream_url
+#         self._finalize_build()
+#         logger.debug(f"Streamed message: {complete_message}")
 
-        await log_vertex_build(
-            flow_id=self.graph.flow_id,
-            vertex_id=self.id,
-            valid=True,
-            params=self._built_object_repr(),
-            data=self.result,
-            artifacts=self.artifacts,
-        )
+#         await log_vertex_build(
+#             flow_id=self.graph.flow_id,
+#             vertex_id=self.id,
+#             valid=True,
+#             params=self._built_object_repr(),
+#             data=self.result,
+#             artifacts=self.artifacts,
+#         )
 
-        self._validate_built_object()
-        self._built = True
+#         self._validate_built_object()
+#         self._built = True
 
-    async def consume_async_generator(self):
-        async for _ in self.stream():
-            pass
+#     async def consume_async_generator(self):
+#         async for _ in self.stream():
+#             pass
 
-    def _is_chat_input(self):
-        return self.vertex_type == InterfaceComponentTypes.ChatInput and self.is_input
+#     def _is_chat_input(self):
+#         return self.vertex_type == InterfaceComponentTypes.ChatInput and self.is_input
 
 
 class StateVertex(Vertex):

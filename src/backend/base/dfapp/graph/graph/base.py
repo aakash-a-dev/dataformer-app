@@ -14,7 +14,7 @@ from dfapp.graph.graph.state_manager import GraphStateManager
 from dfapp.graph.graph.utils import process_flow
 from dfapp.graph.schema import InterfaceComponentTypes, RunOutputs
 from dfapp.graph.vertex.base import Vertex
-from dfapp.graph.vertex.types import ChatVertex, LLMVertex, StateVertex
+from dfapp.graph.vertex.types import LLMVertex, StateVertex
 from dfapp.schema import Record
 from dfapp.schema.schema import INPUT_FIELD_NAME, InputType
 from dfapp.services.deps import get_chat_service
@@ -960,9 +960,9 @@ class Graph:
         """Returns the node class based on the node type."""
         # First we check for the node_base_type
         node_name = node_id.split("-")[0]
-        if node_name in ["ChatOutput", "ChatInput"]:
-            return ChatVertex
-        elif node_name in ["SharedState", "Notify", "Listen"]:
+        # if node_name in ["ChatOutput", "ChatInput"]:
+        #     return ChatVertex
+        if node_name in ["SharedState", "Notify", "Listen"]:
             return StateVertex
         elif node_base_type in lazy_load_vertex_dict.VERTEX_TYPE_MAP:
             return lazy_load_vertex_dict.VERTEX_TYPE_MAP[node_base_type]

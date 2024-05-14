@@ -1,7 +1,7 @@
 import enum
 from typing import Dict, List, Optional, Union
 
-from langchain_core.messages import BaseMessage
+# from langchain_core.messages import BaseMessage
 from pydantic import BaseModel, model_validator
 
 
@@ -18,7 +18,8 @@ class ChatOutputResponse(BaseModel):
     @classmethod
     def from_message(
         cls,
-        message: BaseMessage,
+        # message: BaseMessage,
+        message: str,
         sender: Optional[str] = "Machine",
         sender_name: Optional[str] = "AI",
     ):

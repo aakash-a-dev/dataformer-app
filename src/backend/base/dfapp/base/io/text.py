@@ -1,7 +1,7 @@
 from typing import Optional
 
 from dfapp.field_typing import Text
-from dfapp.helpers.record import records_to_text
+# from dfapp.helpers.record import records_to_text
 from dfapp.interface.custom.custom_component import CustomComponent
 from dfapp.schema.schema import Record
 
@@ -30,12 +30,12 @@ class TextComponent(CustomComponent):
         input_value: Optional[Text] = "",
         record_template: Optional[str] = "{text}",
     ) -> Text:
-        if isinstance(input_value, Record):
-            if record_template == "":
-                # it should be dynamically set to the Record's .text_key value
-                # meaning, if text_key = "bacon", then record_template = "{bacon}"
-                record_template = "{" + input_value.text_key + "}"
-            input_value = records_to_text(template=record_template, records=input_value)
+        # if isinstance(input_value, Record):
+        #     if record_template == "":
+        #         # it should be dynamically set to the Record's .text_key value
+        #         # meaning, if text_key = "bacon", then record_template = "{bacon}"
+        #         record_template = "{" + input_value.text_key + "}"
+        #     input_value = records_to_text(template=record_template, records=input_value)
         self.status = input_value
         if not input_value:
             input_value = ""

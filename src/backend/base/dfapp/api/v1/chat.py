@@ -29,7 +29,7 @@ from dfapp.services.deps import get_chat_service, get_session, get_session_servi
 from dfapp.services.monitor.utils import log_vertex_build
 
 if TYPE_CHECKING:
-    from dfapp.graph.vertex.types import ChatVertex
+    # from dfapp.graph.vertex.types import ChatVertex
     from dfapp.services.session.service import SessionService
 
 router = APIRouter(tags=["Chat"])
@@ -290,7 +290,7 @@ async def build_vertex_stream(
                     if not graph:
                         raise ValueError(f"No graph found for {flow_id}.")
 
-                vertex: "ChatVertex" = graph.get_vertex(vertex_id)
+                vertex = graph.get_vertex(vertex_id)
                 if not hasattr(vertex, "stream"):
                     raise ValueError(f"Vertex {vertex_id} does not support streaming")
                 if isinstance(vertex._built_result, str) and vertex._built_result:

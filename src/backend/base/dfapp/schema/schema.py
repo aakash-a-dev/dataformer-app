@@ -1,10 +1,10 @@
 import copy
 from typing import Literal, Optional, cast
 
-from langchain_core.documents import Document
-from langchain_core.messages import AIMessage, BaseMessage, HumanMessage
+# from langchain_core.documents import Document
+# from langchain_core.messages import AIMessage, BaseMessage, HumanMessage
 from pydantic import BaseModel, model_validator
-from langchain_core.messages import HumanMessage, AIMessage
+# from langchain_core.messages import HumanMessage, AIMessage
 
 
 class Record(BaseModel):
@@ -41,35 +41,35 @@ class Record(BaseModel):
         """
         return self.data.get(self.text_key, self.default_value)
 
-    @classmethod
-    def from_document(cls, document: Document) -> "Record":
-        """
-        Converts a Document to a Record.
+    # @classmethod
+    # def from_document(cls, document: Document) -> "Record":
+    #     """
+    #     Converts a Document to a Record.
 
-        Args:
-            document (Document): The Document to convert.
+    #     Args:
+    #         document (Document): The Document to convert.
 
-        Returns:
-            Record: The converted Record.
-        """
-        data = document.metadata
-        data["text"] = document.page_content
-        return cls(data=data, text_key="text")
+    #     Returns:
+    #         Record: The converted Record.
+    #     """
+    #     data = document.metadata
+    #     data["text"] = document.page_content
+    #     return cls(data=data, text_key="text")
 
-    @classmethod
-    def from_lc_message(cls, message: BaseMessage) -> "Record":
-        """
-        Converts a BaseMessage to a Record.
+    # @classmethod
+    # def from_lc_message(cls, message: BaseMessage) -> "Record":
+    #     """
+    #     Converts a BaseMessage to a Record.
 
-        Args:
-            message (BaseMessage): The BaseMessage to convert.
+    #     Args:
+    #         message (BaseMessage): The BaseMessage to convert.
 
-        Returns:
-            Record: The converted Record.
-        """
-        data: dict = {"text": message.content}
-        data["metadata"] = cast(dict, message.to_json())
-        return cls(data=data, text_key="text")
+    #     Returns:
+    #         Record: The converted Record.
+    #     """
+    #     data: dict = {"text": message.content}
+    #     data["metadata"] = cast(dict, message.to_json())
+    #     return cls(data=data, text_key="text")
 
     def __add__(self, other: "Record") -> "Record":
         """
@@ -92,35 +92,35 @@ class Record(BaseModel):
 
         return Record(data=combined_data)
 
-    def to_lc_document(self) -> Document:
-        """
-        Converts the Record to a Document.
+    # def to_lc_document(self) -> Document:
+    #     """
+    #     Converts the Record to a Document.
 
-        Returns:
-            Document: The converted Document.
-        """
-        text = self.data.pop(self.text_key, self.default_value)
-        return Document(page_content=text, metadata=self.data)
+    #     Returns:
+    #         Document: The converted Document.
+    #     """
+    #     text = self.data.pop(self.text_key, self.default_value)
+    #     return Document(page_content=text, metadata=self.data)
 
-    def to_lc_message(self) -> BaseMessage:
-        """
-        Converts the Record to a BaseMessage.
+    # def to_lc_message(self) -> BaseMessage:
+    #     """
+    #     Converts the Record to a BaseMessage.
 
-        Returns:
-            BaseMessage: The converted BaseMessage.
-        """
-        # The idea of this function is to be a helper to convert a Record to a BaseMessage
-        # It will use the "sender" key to determine if the message is Human or AI
-        # If the key is not present, it will default to AI
-        # But first we check if all required keys are present in the data dictionary
-        # they are: "text", "sender"
-        if not all(key in self.data for key in ["text", "sender"]):
-            raise ValueError(f"Missing required keys ('text', 'sender') in Record: {self.data}")
-        sender = self.data.get("sender", "Machine")
-        text = self.data.get("text", "")
-        if sender == "User":
-            return HumanMessage(content=text)
-        return AIMessage(content=text)
+    #     Returns:
+    #         BaseMessage: The converted BaseMessage.
+    #     """
+    #     # The idea of this function is to be a helper to convert a Record to a BaseMessage
+    #     # It will use the "sender" key to determine if the message is Human or AI
+    #     # If the key is not present, it will default to AI
+    #     # But first we check if all required keys are present in the data dictionary
+    #     # they are: "text", "sender"
+    #     if not all(key in self.data for key in ["text", "sender"]):
+    #         raise ValueError(f"Missing required keys ('text', 'sender') in Record: {self.data}")
+    #     sender = self.data.get("sender", "Machine")
+    #     text = self.data.get("text", "")
+    #     if sender == "User":
+    #         return HumanMessage(content=text)
+    #     return AIMessage(content=text)
 
     def __getattr__(self, key):
         """

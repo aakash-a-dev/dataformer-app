@@ -5,7 +5,7 @@ from uuid import UUID
 
 import yaml
 from cachetools import TTLCache, cachedmethod
-from langchain_core.documents import Document
+# from langchain_core.documents import Document
 from pydantic import BaseModel
 
 from dfapp.helpers.flow import list_flows, load_flow, run_flow
@@ -217,10 +217,10 @@ class CustomComponent(Component):
             data = [data]
         for item in data:
             data_dict = {}
-            if isinstance(item, Document):
-                data_dict = item.metadata
-                data_dict["text"] = item.page_content
-            elif isinstance(item, BaseModel):
+            # if isinstance(item, Document):
+            #     data_dict = item.metadata
+            #     data_dict["text"] = item.page_content
+            if isinstance(item, BaseModel):
                 model_dump = item.model_dump()
                 for key in keys:
                     if silent_errors:

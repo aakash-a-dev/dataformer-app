@@ -1,24 +1,24 @@
 import inspect
 from typing import Any
 
-from langchain import llms, memory, requests, text_splitter
-from langchain_community import agent_toolkits, document_loaders, embeddings
-from langchain_community.chat_models import AzureChatOpenAI, ChatAnthropic, ChatOpenAI, ChatVertexAI
+# from langchain import llms, memory, requests, text_splitter
+# from langchain_community import agent_toolkits, document_loaders, embeddings
+# from langchain_community.chat_models import AzureChatOpenAI, ChatAnthropic, ChatOpenAI, ChatVertexAI
 
 from dfapp.interface.importing.utils import import_class
 
 # LLMs
-llm_type_to_cls_dict = {}
+# llm_type_to_cls_dict = {}
 
-for k, v in llms.get_type_to_cls_dict().items():
-    try:
-        llm_type_to_cls_dict[k] = v()
-    except Exception:
-        pass
-llm_type_to_cls_dict["anthropic-chat"] = ChatAnthropic  # type: ignore
-llm_type_to_cls_dict["azure-chat"] = AzureChatOpenAI  # type: ignore
-llm_type_to_cls_dict["openai-chat"] = ChatOpenAI  # type: ignore
-llm_type_to_cls_dict["vertexai-chat"] = ChatVertexAI  # type: ignore
+# for k, v in llms.get_type_to_cls_dict().items():
+#     try:
+#         llm_type_to_cls_dict[k] = v()
+#     except Exception:
+#         pass
+# llm_type_to_cls_dict["anthropic-chat"] = ChatAnthropic  # type: ignore
+# llm_type_to_cls_dict["azure-chat"] = AzureChatOpenAI  # type: ignore
+# llm_type_to_cls_dict["openai-chat"] = ChatOpenAI  # type: ignore
+# llm_type_to_cls_dict["vertexai-chat"] = ChatVertexAI  # type: ignore
 
 
 # # Toolkits

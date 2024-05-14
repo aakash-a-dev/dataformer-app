@@ -10,14 +10,14 @@ from pydantic import ValidationError
 from dfapp.interface.custom.eval import eval_custom_component_code
 from dfapp.interface.importing.utils import import_by_type
 from dfapp.interface.initialize.llm import initialize_vertexai
-from dfapp.interface.initialize.utils import handle_format_kwargs, handle_node_type, handle_partial_variables
-from dfapp.interface.initialize.vector_store import vecstore_initializer
+# from dfapp.interface.initialize.utils import handle_format_kwargs, handle_node_type, handle_partial_variables
+# from dfapp.interface.initialize.vector_store import vecstore_initializer
 # from dfapp.interface.output_parsers.base import output_parser_creator
-from dfapp.interface.utils import load_file_into_dict
+# from dfapp.interface.utils import load_file_into_dict
 # from dfapp.interface.wrappers.base import wrapper_creator
 from dfapp.schema.schema import Record
-from dfapp.utils import validate
-from dfapp.utils.util import unescape_string
+# from dfapp.utils import validate
+# from dfapp.utils.util import unescape_string
 
 if TYPE_CHECKING:
     from dfapp.custom import CustomComponent
@@ -92,36 +92,36 @@ async def instantiate_based_on_type(
     user_id,
     vertex,
 ):
-    if base_type == "agents":
-        return instantiate_agent(node_type, class_object, params)
-    elif base_type == "prompts":
+    # if base_type == "agents":
+    #     return instantiate_agent(node_type, class_object, params)
+    if base_type == "prompts":
         return instantiate_prompt(node_type, class_object, params)
-    elif base_type == "tools":
-        tool = instantiate_tool(node_type, class_object, params)
-        if hasattr(tool, "name") and isinstance(tool, BaseTool):
-            # tool name shouldn't contain spaces
-            tool.name = tool.name.replace(" ", "_")
-        return tool
-    elif base_type == "toolkits":
-        return instantiate_toolkit(node_type, class_object, params)
-    elif base_type == "embeddings":
-        return instantiate_embedding(node_type, class_object, params)
-    elif base_type == "vectorstores":
-        return instantiate_vectorstore(class_object, params)
-    elif base_type == "documentloaders":
-        return instantiate_documentloader(node_type, class_object, params)
-    elif base_type == "textsplitters":
-        return instantiate_textsplitter(class_object, params)
-    elif base_type == "utilities":
-        return instantiate_utility(node_type, class_object, params)
-    elif base_type == "chains":
-        return instantiate_chains(node_type, class_object, params)
-    elif base_type == "output_parsers":
-        return instantiate_output_parser(node_type, class_object, params)
+    # elif base_type == "tools":
+    #     tool = instantiate_tool(node_type, class_object, params)
+    #     if hasattr(tool, "name") and isinstance(tool, BaseTool):
+    #         # tool name shouldn't contain spaces
+    #         tool.name = tool.name.replace(" ", "_")
+    #     return tool
+    # elif base_type == "toolkits":
+    #     return instantiate_toolkit(node_type, class_object, params)
+    # elif base_type == "embeddings":
+    #     return instantiate_embedding(node_type, class_object, params)
+    # elif base_type == "vectorstores":
+    #     return instantiate_vectorstore(class_object, params)
+    # elif base_type == "documentloaders":
+    #     return instantiate_documentloader(node_type, class_object, params)
+    # elif base_type == "textsplitters":
+    #     return instantiate_textsplitter(class_object, params)
+    # elif base_type == "utilities":
+    #     return instantiate_utility(node_type, class_object, params)
+    # elif base_type == "chains":
+    #     return instantiate_chains(node_type, class_object, params)
+    # elif base_type == "output_parsers":
+    #     return instantiate_output_parser(node_type, class_object, params)
     elif base_type == "models":
         return instantiate_llm(node_type, class_object, params)
-    elif base_type == "retrievers":
-        return instantiate_retriever(node_type, class_object, params)
+    # elif base_type == "retrievers":
+    #     return instantiate_retriever(node_type, class_object, params)
     elif base_type == "memory":
         return instantiate_memory(node_type, class_object, params)
     elif base_type == "custom_components":
@@ -130,8 +130,8 @@ async def instantiate_based_on_type(
             user_id,
             vertex,
         )
-    elif base_type == "wrappers":
-        return instantiate_wrapper(node_type, class_object, params)
+    # elif base_type == "wrappers":
+    #     return instantiate_wrapper(node_type, class_object, params)
     else:
         return class_object(**params)
 
@@ -191,13 +191,13 @@ async def instantiate_custom_component(params, user_id, vertex):
 #     return class_object(**params)
 
 
-def instantiate_output_parser(node_type, class_object, params):
-    if node_type in output_parser_creator.from_method_nodes:
-        method = output_parser_creator.from_method_nodes[node_type]
-        if class_method := getattr(class_object, method, None):
-            return class_method(**params)
-        raise ValueError(f"Method {method} not found in {class_object}")
-    return class_object(**params)
+# def instantiate_output_parser(node_type, class_object, params):
+#     if node_type in output_parser_creator.from_method_nodes:
+#         method = output_parser_creator.from_method_nodes[node_type]
+#         if class_method := getattr(class_object, method, None):
+#             return class_method(**params)
+#         raise ValueError(f"Method {method} not found in {class_object}")
+#     return class_object(**params)
 
 
 def instantiate_llm(node_type, class_object, params: Dict):
@@ -242,13 +242,13 @@ def instantiate_memory(node_type, class_object, params):
         raise exc
 
 
-def instantiate_prompt(node_type, class_object, params: Dict):
-    params, prompt = handle_node_type(node_type, class_object, params)
-    format_kwargs = handle_format_kwargs(prompt, params)
-    # Now we'll use partial_format to format the prompt
-    if format_kwargs:
-        prompt = handle_partial_variables(prompt, format_kwargs)
-    return prompt, format_kwargs
+# def instantiate_prompt(node_type, class_object, params: Dict):
+#     params, prompt = handle_node_type(node_type, class_object, params)
+#     format_kwargs = handle_format_kwargs(prompt, params)
+#     # Now we'll use partial_format to format the prompt
+#     if format_kwargs:
+#         prompt = handle_partial_variables(prompt, format_kwargs)
+#     return prompt, format_kwargs
 
 
 def replace_zero_shot_prompt_with_prompt_template(nodes):

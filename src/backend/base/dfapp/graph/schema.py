@@ -26,8 +26,8 @@ class ResultData(BaseModel):
 class InterfaceComponentTypes(str, Enum, metaclass=ContainsEnumMeta):
     # ChatInput and ChatOutput are the only ones that are
     # power components
-    ChatInput = "ChatInput"
-    ChatOutput = "ChatOutput"
+    # ChatInput = "ChatInput"
+    # ChatOutput = "ChatOutput"
     TextInput = "TextInput"
     TextOutput = "TextOutput"
 
@@ -41,11 +41,11 @@ class InterfaceComponentTypes(str, Enum, metaclass=ContainsEnumMeta):
 
 
 INPUT_COMPONENTS = [
-    InterfaceComponentTypes.ChatInput,
+    # InterfaceComponentTypes.ChatInput,
     InterfaceComponentTypes.TextInput,
 ]
 OUTPUT_COMPONENTS = [
-    InterfaceComponentTypes.ChatOutput,
+    # InterfaceComponentTypes.ChatOutput,
     InterfaceComponentTypes.TextOutput,
 ]
 

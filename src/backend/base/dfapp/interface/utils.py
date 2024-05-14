@@ -7,7 +7,7 @@ from typing import Dict
 
 import yaml
 from docstring_parser import parse
-from langchain.base_language import BaseLanguageModel
+# from langchain.base_language import BaseLanguageModel
 from dfapp.services.chat.config import ChatConfig
 from dfapp.services.deps import get_settings_service
 from dfapp.utils.util import format_dict, get_base_classes, get_default_factory
@@ -48,11 +48,11 @@ def try_setting_streaming_options(langchain_object):
     elif hasattr(langchain_object, "llm_chain") and hasattr(langchain_object.llm_chain, "llm"):
         llm = langchain_object.llm_chain.llm
 
-    if isinstance(llm, BaseLanguageModel):
-        if hasattr(llm, "streaming") and isinstance(llm.streaming, bool):
-            llm.streaming = ChatConfig.streaming
-        elif hasattr(llm, "stream") and isinstance(llm.stream, bool):
-            llm.stream = ChatConfig.streaming
+    # if isinstance(llm, BaseLanguageModel):
+    #     if hasattr(llm, "streaming") and isinstance(llm.streaming, bool):
+    #         llm.streaming = ChatConfig.streaming
+    #     elif hasattr(llm, "stream") and isinstance(llm.stream, bool):
+    #         llm.stream = ChatConfig.streaming
 
     return langchain_object
 
